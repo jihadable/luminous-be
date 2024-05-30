@@ -1,9 +1,9 @@
 import { Response } from "express"
 
-const serverErrorResponse = (error: any, res: Response) => {
+const serverErrorResponse = (error: any, res: Response): Response => {
     console.log(error.message)
 
-    res.status(500).json({
+    return res.status(500).json({
         status: 500,
         ok: false,
         message: error.message
