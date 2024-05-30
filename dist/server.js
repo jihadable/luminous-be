@@ -38,6 +38,7 @@ const app = (0, express_1.default)();
 // middlewares
 app.use(express_1.default.json(), express_1.default.static("views"));
 app.use("/styles", express_1.default.static(path_1.default.join(__dirname, "styles")));
+app.use("/images", express_1.default.static(path_1.default.join(__dirname, "images")));
 // root endpoint
 app.get("/", (req, res) => {
     res.sendFile(path_1.default.join(__dirname, "views", "index.html"));

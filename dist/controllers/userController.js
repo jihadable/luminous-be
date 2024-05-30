@@ -17,7 +17,7 @@ const bcrypt_1 = require("bcrypt");
 const userModel_1 = __importDefault(require("../models/userModel"));
 const defaultResponse_1 = __importDefault(require("../utils/defaultResponse"));
 const serverErrorResponse_1 = __importDefault(require("../utils/serverErrorResponse"));
-// get user profile
+// get users profile
 const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { user_id } = req.body;

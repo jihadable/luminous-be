@@ -13,6 +13,7 @@ const app: Application = express()
 // middlewares
 app.use(express.json(), express.static("views"))
 app.use("/styles", express.static(path.join(__dirname, "styles")))
+app.use("/images", express.static(path.join(__dirname, "images")))
 
 // root endpoint
 app.get("/", (req: Request, res: Response) => {
