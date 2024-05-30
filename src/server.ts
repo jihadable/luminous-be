@@ -8,8 +8,7 @@ app.use(express.json(), express.static("views"))
 app.use("/styles", express.static(path.join(__dirname, "styles")))
 
 app.get("/", (req: Request, res: Response) => {
-    res.send("RUN")
-    // res.sendFile(path.join(__dirname, "views", "index.html"))
+    res.sendFile(path.join(__dirname, "views", "index.html"))
 })
 
 app.use("/api/users", userRouter)

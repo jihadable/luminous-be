@@ -10,8 +10,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json(), express_1.default.static("views"));
 app.use("/styles", express_1.default.static(path_1.default.join(__dirname, "styles")));
 app.get("/", (req, res) => {
-    res.send("RUN");
-    // res.sendFile(path.join(__dirname, "views", "index.html"))
+    res.sendFile(path_1.default.join(__dirname, "views", "index.html"));
 });
 app.use("/api/users", userRoute_1.default);
 app.listen(8000, () => {
