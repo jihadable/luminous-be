@@ -13,6 +13,9 @@ app.get("/", (req, res) => {
     res.sendFile(path_1.default.join(__dirname, "views", "index.html"));
 });
 app.use("/api/users", userRoute_1.default);
+app.use((req, res) => {
+    res.sendFile(path_1.default.join(__dirname, "views", "not-found.html"));
+});
 app.listen(8000, () => {
     console.log("Server is running");
 });

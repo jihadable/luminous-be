@@ -13,6 +13,10 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/users", userRouter)
 
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, "views", "not-found.html"))
+})
+
 app.listen(8000, () => {
     console.log("Server is running")
 })
