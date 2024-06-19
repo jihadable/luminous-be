@@ -34,6 +34,7 @@ const productSchema: Schema<productDocument> = new Schema(
 // product response
 productSchema.methods.response = function(){
     return {
+        id: this._id,
         name: this.name,
         price: this.price,
         img: this.img,
@@ -42,7 +43,7 @@ productSchema.methods.response = function(){
         size: this.size,
         description: this.description,
         category: this.category,
-        stock: this.stock
+        // stock: this.stock
     }
 }
 

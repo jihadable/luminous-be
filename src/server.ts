@@ -1,3 +1,4 @@
+import cors from "cors";
 import * as dotenv from 'dotenv';
 import express, { Application, Request, Response } from 'express';
 import mongoose from 'mongoose';
@@ -11,7 +12,7 @@ const port = process.env.PORT!
 const app: Application = express()
 
 // middlewares
-app.use(express.json(), express.static("views"))
+app.use(express.json(), express.static("views"), cors())
 app.use("/styles", express.static(path.join(__dirname, "styles")))
 app.use("/images", express.static(path.join(__dirname, "images")))
 
