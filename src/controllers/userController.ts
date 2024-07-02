@@ -36,8 +36,9 @@ export const register = async(req: Request, res: Response): Promise<Response> =>
         user = await User.create({ ...req.body })
     
         return res.status(201).json({
-            ...defaultResponse(201, true, "User registered"),
-            token: await user.generateJWT()
+            ...defaultResponse(201, true, "User registered successfully"),
+            token: await user.generateJWT(),
+            user: user.response()
         })
     } catch(error){
         return serverErrorResponse(error, res)
@@ -59,10 +60,20 @@ export const login = async(req: Request, res: Response): Promise<Response> => {
             return res.status(401).json(defaultResponse(401, false, "Invalid email or password"))
         }
 
-        return res.status(202).json({
-            ...defaultResponse(202, true, "User Logged in successfully"),
-            token: await user.generateJWT()
+        return res.status(200).json({
+            ...defaultResponse(200, true, "User Logged in successfully"),
+            token: await user.generateJWT(),
+            user: user.response()
         })
+    } catch(error){
+        return serverErrorResponse(error, res)
+    }
+}
+
+// update user profile
+export const updateUserProfile = async(req: Request, res: Response): Promise<Response> => {
+    try {
+        return res.status(200)
     } catch(error){
         return serverErrorResponse(error, res)
     }
