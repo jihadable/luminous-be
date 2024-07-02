@@ -73,7 +73,15 @@ export const login = async(req: Request, res: Response): Promise<Response> => {
 // update user profile
 export const updateUserProfile = async(req: Request, res: Response): Promise<Response> => {
     try {
-        return res.status(200)
+        if (req.body.email || req.body.password){
+            return res.status(400).json(defaultResponse(400, false, "Some fields are not allowed to be updated."))
+        }
+
+        const { user_id } = req.body
+
+        await User.findByIdAndUpdate(user_id, {...req.body})
+        
+        return res.status(200).json(defaultResponse(200, true, "User profile updated successfully"))
     } catch(error){
         return serverErrorResponse(error, res)
     }
