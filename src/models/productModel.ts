@@ -9,7 +9,10 @@ type productDocument = {
     size: string,
     description: string,
     category: string[],
-    stock: number,
+    stock: {
+        type: Number,
+        default: 100,
+    },
     response: () => object
 }
 
