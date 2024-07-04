@@ -9,7 +9,7 @@ export const getAllProducts = async(req: Request, res: Response): Promise<Respon
         const products = await Product.find()
 
         return res.status(200).json({
-            ...defaultResponse(200, true, "Get all products successfully"),
+            ...defaultResponse(200, true, "Berhasil mendapatkan semua produk"),
             products: products.map(product => product.response())
         })
     } catch(error){
@@ -25,11 +25,11 @@ export const getSingleProduct = async(req: Request, res: Response): Promise<Resp
         const product = await Product.findById(id)
 
         if (!product){
-            return res.status(400).json(defaultResponse(400, false, "Invalid ID"))
+            return res.status(400).json(defaultResponse(400, false, "ID invalid"))
         }
 
         return res.status(200).json({
-            ...defaultResponse(200, true, "Get single product successfully"),
+            ...defaultResponse(200, true, "Berhasil mendapatkan produk"),
             product
         })
     } catch(error){
@@ -175,7 +175,7 @@ export const restoreProducts = async(req: Request, res: Response): Promise<Respo
             {
                 name: "Piring Pencuci Mulut",
                 price: 30000,
-                img: "piring-pencuci-mulut",
+                img: "piring-pencuci-mulut.jpg",
                 categories: ["dapur"],
                 description: "Tingkatkan presentasi makanan penutup Anda dengan Piring Pencuci Mulut kami. Desain elegannya melengkapi hidangan manis dan menambahkan sentuhan keanggunan ke meja Anda, menjadikannya ideal untuk acara khusus dan penggunaan sehari-hari.",
                 texture: "Logam",

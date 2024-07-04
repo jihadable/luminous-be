@@ -12,11 +12,11 @@ export const getUserProfile = async(req: Request, res: Response): Promise<Respon
         const user = await User.findById(user_id)
 
         if (!user){
-            return res.status(401).json(defaultResponse(401, false, "Invalid token"))
+            return res.status(401).json(defaultResponse(401, false, "Pengguna tidak terdaftar"))
         }
 
         return res.status(200).json({
-            ...defaultResponse(200, true, "Get user profile successfully"),
+            ...defaultResponse(200, true, "Berhasil mendapatkan data pengguna"),
             user: user.response()
         })
     } catch(error){
@@ -30,13 +30,13 @@ export const register = async(req: Request, res: Response): Promise<Response> =>
         let user = await User.findOne({ email: req.body.email })
 
         if (user){
-            return res.status(400).json(defaultResponse(400, false, "User have already registered"))
+            return res.status(400).json(defaultResponse(400, false, "Pengguna sudah terdaftar"))
         }
 
         user = await User.create({ ...req.body })
     
         return res.status(201).json({
-            ...defaultResponse(201, true, "User registered successfully"),
+            ...defaultResponse(201, true, "Pengguna berhasil melakukan registrasi"),
             token: await user.generateJWT(),
             user: user.response()
         })
@@ -53,15 +53,15 @@ export const login = async(req: Request, res: Response): Promise<Response> => {
         const user = await User.findOne({ email })
 
         if (!user){
-            return res.status(401).json(defaultResponse(401, false, "Invalid email or password"))
+            return res.status(401).json(defaultResponse(401, false, "Email atau password salah"))
         }
 
         if (!compareSync(password, user.password)){
-            return res.status(401).json(defaultResponse(401, false, "Invalid email or password"))
+            return res.status(401).json(defaultResponse(401, false, "Email atau password salah"))
         }
 
         return res.status(200).json({
-            ...defaultResponse(200, true, "User Logged in successfully"),
+            ...defaultResponse(200, true, "Pengguna berhasil login"),
             token: await user.generateJWT(),
             user: user.response()
         })
@@ -74,14 +74,14 @@ export const login = async(req: Request, res: Response): Promise<Response> => {
 export const updateUserProfile = async(req: Request, res: Response): Promise<Response> => {
     try {
         if (req.body.email || req.body.password){
-            return res.status(400).json(defaultResponse(400, false, "Some fields are not allowed to be updated."))
+            return res.status(400).json(defaultResponse(400, false, "Terdapat data yang tidak bisa diperbarui"))
         }
 
         const { user_id } = req.body
 
         await User.findByIdAndUpdate(user_id, { ...req.body })
         
-        return res.status(200).json(defaultResponse(200, true, "User profile updated successfully"))
+        return res.status(200).json(defaultResponse(200, true, "Pembaruan data pengguna berhasil"))
     } catch(error){
         return serverErrorResponse(error, res)
     }

@@ -5,7 +5,7 @@ type UserDocument = {
     fullname: string,
     email: string,
     password: string,
-    no_hp: number,
+    phone: string,
     address: string,
     generateJWT: () => Promise<string>,
     response: () => object
@@ -16,8 +16,8 @@ const userSchema: Schema<UserDocument> = new Schema(
         fullname: String,
         email: String,
         password: String,
-        no_hp: {
-            type: Number,
+        phone: {
+            type: String,
             default: null
         },
         address: {
@@ -41,7 +41,7 @@ userSchema.methods.response = function(){
     return {
         fullname: this.fullname,
         email: this.email,
-        no_hp: this.no_hp,
+        phone: this.phone,
         address: this.address
     }
 }

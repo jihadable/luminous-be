@@ -8,7 +8,7 @@ type productDocument = {
     weight: number,
     size: string,
     description: string,
-    category: string[],
+    categories: string[],
     stock: {
         type: Number,
         default: 100,
@@ -25,7 +25,7 @@ const productSchema: Schema<productDocument> = new Schema(
         weight: Number,
         size: String,
         description: String,
-        category: [String],
+        categories: [String],
         stock: Number
     },
     {
@@ -45,8 +45,7 @@ productSchema.methods.response = function(){
         weight: this.weight,
         size: this.size,
         description: this.description,
-        category: this.category,
-        // stock: this.stock
+        categories: this.categories
     }
 }
 
