@@ -79,7 +79,7 @@ export const updateUserProfile = async(req: Request, res: Response): Promise<Res
 
         const { user_id } = req.body
 
-        await User.findByIdAndUpdate(user_id, {...req.body})
+        await User.findByIdAndUpdate(user_id, { ...req.body })
         
         return res.status(200).json(defaultResponse(200, true, "User profile updated successfully"))
     } catch(error){
