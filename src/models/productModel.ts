@@ -1,6 +1,5 @@
-import { Schema, model } from "mongoose"
-
-type productDocument = {
+type ProductType = {
+    id: number,
     name: string,
     price: number,
     img: string,
@@ -8,47 +7,29 @@ type productDocument = {
     weight: number,
     size: string,
     description: string,
-    categories: string[],
-    stock: {
-        type: Number,
-        default: 100,
-    },
-    response: () => object
+    category: string
 }
 
-const productSchema: Schema<productDocument> = new Schema(
-    {
-        name: String,
-        price: Number,
-        img: String,
-        texture: String,
-        weight: Number,
-        size: String,
-        description: String,
-        categories: [String],
-        stock: Number
+const Product = {
+    async find(){
+        
     },
-    {
-        timestamps: true,
-        collection: "products"
-    }
-)
 
-// product response
-productSchema.methods.response = function(){
-    return {
-        id: this._id,
-        name: this.name,
-        price: this.price,
-        img: this.img,
-        texture: this.texture,
-        weight: this.weight,
-        size: this.size,
-        description: this.description,
-        categories: this.categories
+    async findById(id: number){
+
+    },
+
+    response(product: ProductType){
+        return {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            img: product.img,
+            texture: product.texture,
+            weight: product.weight,
+            size: product.size,
+            description: product.description,
+            category: product.category
+        }
     }
 }
-
-const Product = model<productDocument>("Product", productSchema)
-
-export default Product

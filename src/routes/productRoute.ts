@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { getAllProducts, getSingleProduct, restoreProducts } from "../controllers/productController";
-import { idValidation } from "../middlewares/idValidationMiddleware";
+import { getAllProducts, getSingleProduct } from "../controllers/productController";
 
 const productRouter = Router()
 
@@ -8,9 +7,6 @@ const productRouter = Router()
 productRouter.get("/", getAllProducts)
 
 // get single product
-productRouter.get("/:id", idValidation, getSingleProduct)
-
-// restore products
-productRouter.post("/", restoreProducts)
+productRouter.get("/:id", getSingleProduct)
 
 export default productRouter

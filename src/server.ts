@@ -1,8 +1,8 @@
 import cors from "cors";
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 import express, { Application, Request, Response } from 'express';
-import mongoose from 'mongoose';
 import path from 'path';
+import { pool } from "./database/database";
 import productRouter from './routes/productRoute';
 import userRouter from './routes/userRoute';
 
@@ -32,13 +32,14 @@ app.use((req, res) => {
     res.sendFile(path.join(__dirname, "views", "not-found.html"))
 })
 
-// connect to database
-mongoose.connect(process.env.MONGO_URI!, { dbName: "luminous" })
-    .then(() => {
-        app.listen(port, () => {
-            console.log("Server is running")
-        })
+app.listen(port, () => {
+    pool.connect((error) => {
+        if (error){
+            console.log(error)
+    
+            return
+        }
+
+        console.log("Server is running")
     })
-    .catch(error => {
-        console.log(error)
-    })
+})
