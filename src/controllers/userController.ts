@@ -1,5 +1,6 @@
 import { compareSync } from "bcrypt";
 import { Request, Response } from "express";
+import Joi from "joi";
 import { User } from "../models/userModel";
 import defaultResponse from "../utils/defaultResponse";
 import { generateJWT } from "../utils/generateJWT";
@@ -27,6 +28,20 @@ export const getUserProfile = async(req: Request, res: Response): Promise<Respon
 
 // register
 export const register = async(req: Request, res: Response): Promise<Response> => {
+    const registerSchema = Joi.object({
+        fullname: Joi.string().required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().required(),
+        phone: Joi.string().pattern(/^08\d{8,13}$/).required(),
+        address: Joi.string().required()
+    })
+
+    const { error } = registerSchema.validate(req.body)
+
+    if (error){
+        return res.status(400).json(defaultResponse(400, false, error.details[0].message))
+    }
+    
     try {
         let user = await User.findByEmail(req.body.email)
 
@@ -48,6 +63,17 @@ export const register = async(req: Request, res: Response): Promise<Response> =>
 
 // login
 export const login = async(req: Request, res: Response): Promise<Response> => {
+    const loginSchema = Joi.object({
+        email: Joi.string().email().required(),
+        password: Joi.string().required()
+    })
+
+    const { error } = loginSchema.validate(req.body)
+
+    if (error){
+        return res.status(400).json(defaultResponse(400, false, error.details[0].message))
+    }
+
     try {
         const { email, password } = req.body
 
@@ -69,6 +95,17 @@ export const login = async(req: Request, res: Response): Promise<Response> => {
 
 // update user profile
 export const updateUserProfile = async(req: Request, res: Response): Promise<Response> => {
+    const updateUserProfileSchema = Joi.object({
+        phone: Joi.string().pattern(/^08\d{8,13}$/).required(),
+        address: Joi.string().required()
+    })
+
+    const { error } = updateUserProfileSchema.validate(req.body)
+
+    if (error){
+        return res.status(400).json(defaultResponse(400, false, error.details[0].message))
+    }
+
     try {
         const { user_id } = req.body
 
