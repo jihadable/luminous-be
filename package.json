@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --watch src --ext ts --ignore dist --exec ts-node src/server.ts",
+    "migrate": "ts-node src/database/migration.ts",
     "build": "rm -rf dist/ && tsc && copyfiles -u 1 src/views/**/* dist/ && copyfiles -u 1 src/styles/**/* dist/ && copyfiles -u 1 src/images/**/* dist/ && copyfiles vercel.json dist/ "
   },
   "keywords": [],
