@@ -18,7 +18,8 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.12.0"
+    "pg": "^8.12.0",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -27,6 +28,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.12",
     "@types/pg": "^8.11.6",
+    "@types/uuid": "^10.0.0",
     "copyfiles": "^2.4.1",
     "dotenv": "^16.4.5",
     "nodemon": "^3.1.2",

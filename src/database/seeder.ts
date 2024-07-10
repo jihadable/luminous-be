@@ -1,5 +1,6 @@
-import { hash } from "bcrypt"
-import { pool } from "./database"
+import { hash } from "bcrypt";
+import { v4 as uuidv4 } from 'uuid';
+import { pool } from "./database";
 
 export const seeder = async() => {
     await userSeeder()
@@ -247,10 +248,12 @@ const productSeeder = async() => {
     ]
 
     const values = products.map(product => {
-        return `('${product.name}', ${product.price}, '${product.image}', '${product.texture}', ${product.weight}, '${product.size}', '${product.category}', '${product.description}')`;
+        const slug: string = uuidv4()
+        
+        return `('${slug}', '${product.name}', ${product.price}, '${product.image}', '${product.texture}', ${product.weight}, '${product.size}', '${product.category}', '${product.description}')`;
     }).join(", ")
 
-    const query = ` INSERT INTO products (name, price, image, texture, weight, size, category, description) VALUES ${values}`
+    const query = ` INSERT INTO products (slug, name, price, image, texture, weight, size, category, description) VALUES ${values}`
 
     await pool.query(query);
 }

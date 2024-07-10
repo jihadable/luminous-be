@@ -8,6 +8,7 @@ export const createProductsTable = async() => {
     const createQuery: string = 
     `CREATE TABLE products (
         id SERIAL PRIMARY KEY,
+        slug UUID NOT NULL,
         name VARCHAR(255) NOT NULL,
         price DECIMAL(10, 2) NOT NULL,
         image VARCHAR(255) NOT NULL,
