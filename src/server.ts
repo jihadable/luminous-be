@@ -29,7 +29,7 @@ app.use("/api/products", productRouter)
 
 // not found page
 app.use((req, res) => {
-    res.sendFile(path.join(__dirname, "views", "not-found.html"))
+    res.status(404).sendFile(path.join(__dirname, "views", "not-found.html"))
 })
 
 app.listen(port, () => {

@@ -31,7 +31,7 @@ export const register = async(req: Request, res: Response): Promise<Response> =>
     const registerSchema = Joi.object({
         fullname: Joi.string().required(),
         email: Joi.string().email().required(),
-        password: Joi.string().required(),
+        password: Joi.string().min(8).required(),
         phone: Joi.string().pattern(/^08\d{8,13}$/).required(),
         address: Joi.string().required()
     })
@@ -96,6 +96,7 @@ export const login = async(req: Request, res: Response): Promise<Response> => {
 // update user profile
 export const updateUserProfile = async(req: Request, res: Response): Promise<Response> => {
     const updateUserProfileSchema = Joi.object({
+        user_id: Joi.string().required(),
         phone: Joi.string().pattern(/^08\d{8,13}$/).required(),
         address: Joi.string().required()
     })
