@@ -1,7 +1,7 @@
 import { pool } from "../database"
 
 export const createProductsTable = async() => {
-    const dropQuery: string = "DROP TABLE products;"
+    const dropQuery: string = "DROP TABLE IF EXISTS products"
 
     await pool.query(dropQuery)
 
