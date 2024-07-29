@@ -13,7 +13,7 @@ const port = process.env.PORT!
 const app: Application = express()
 
 // middlewares
-app.use(express.json(), express.static("views"), cors())
+app.use(express.json(), express.static("views"), cors({ origin: ["https://luminous-2110.netlify.app", "http://localhost:5173"] }))
 app.use("/styles", express.static(path.join(__dirname, "styles")))
 app.use("/images", express.static(path.join(__dirname, "images")))
 
