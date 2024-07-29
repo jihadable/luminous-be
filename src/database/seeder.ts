@@ -8,7 +8,7 @@ export const seeder = async() => {
 }
 
 const userSeeder = async() => {
-    const password: string = await hash("abcddcba", 10)
+    const password: string = await hash(process.env.PRIVATE_PASSWORD!, 10)
 
     const user = {
         fullname: "Umar Jihad",
