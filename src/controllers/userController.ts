@@ -97,6 +97,7 @@ export const login = async(req: Request, res: Response): Promise<Response> => {
 export const updateUserProfile = async(req: Request, res: Response): Promise<Response> => {
     const updateUserProfileSchema = Joi.object({
         user_id: Joi.number().required(),
+        fullname: Joi.string().required(),
         phone: Joi.string().pattern(/^08\d{8,13}$/).required(),
         address: Joi.string().required()
     })

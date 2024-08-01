@@ -33,10 +33,10 @@ export const User = {
         return rows[0]
     },
 
-    async update(id: number, data: { phone: string, address: string }){
-        const query: string = "UPDATE users SET phone = $1, address = $2 WHERE id = $3 RETURNING *"
+    async update(id: number, data: { fullname: string, phone: string, address: string }){
+        const query: string = "UPDATE users SET fullname = $1, phone = $2, address = $3 WHERE id = $4 RETURNING *"
 
-        const { rows } = await pool.query(query, [data.phone, data.address, id])
+        const { rows } = await pool.query(query, [data.fullname, data.phone, data.address, id])
 
         return rows[0]
     },
