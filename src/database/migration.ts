@@ -1,10 +1,14 @@
 import { seeder } from "./seeder"
+import { createCartProductsTable } from "./tables/createCartProductsTable"
 import { createProductsTable } from "./tables/createProductsTable"
 import { createUsersTable } from "./tables/createUsersTable"
 
 const migration = async() => {
-    await createUsersTable()
-    await createProductsTable()
+    await Promise.all([
+        createUsersTable(),
+        createProductsTable(),
+        createCartProductsTable()
+    ])
 
     await seeder()
 }

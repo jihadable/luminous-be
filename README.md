@@ -7,6 +7,8 @@ Luminous adalah platform e-commerce yang mengkhususkan diri dalam penjualan bara
 👉 [Frontend Github](https://github.com/jihadable/luminous)
 
 ## Tech Stack
+» Typescript
+<br/>
 » NodeJS
 <br/>
 » ExpressJS

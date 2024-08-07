@@ -4,6 +4,7 @@ import express, { Application, Request, Response } from 'express';
 import rateLimit from "express-rate-limit";
 import path from 'path';
 import { pool } from "./database/database";
+import cartProductRouter from "./routes/cartProductRoute";
 import productRouter from './routes/productRoute';
 import userRouter from './routes/userRoute';
 
@@ -41,6 +42,9 @@ app.use("/api/users", userRouter)
 
 // products api
 app.use("/api/products", productRouter)
+
+// cart products api
+app.use("/api/cart-products", cartProductRouter)
 
 // not found page
 app.use((req, res) => {

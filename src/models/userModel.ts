@@ -14,7 +14,7 @@ export const User = {
 
         const { rows } = await pool.query(query, [id])
 
-        return rows[0]
+        return rows[0] || null
     },
 
     async findByEmail(email: string){
@@ -22,7 +22,7 @@ export const User = {
 
         const { rows } = await pool.query(query, [email])
 
-        return rows[0]
+        return rows[0] || null
     },
 
     async create(data: UserType){
@@ -30,7 +30,7 @@ export const User = {
 
         const { rows } = await pool.query(query, [data.fullname, data.email, data.password, data.phone, data.address])
 
-        return rows[0]
+        return rows[0] || null
     },
 
     async update(id: number, data: { fullname: string, phone: string, address: string }){
@@ -38,7 +38,7 @@ export const User = {
 
         const { rows } = await pool.query(query, [data.fullname, data.phone, data.address, id])
 
-        return rows[0]
+        return rows[0] || null
     },
 
     response(user: UserType){

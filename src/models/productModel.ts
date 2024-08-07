@@ -4,10 +4,10 @@ type ProductType = {
     id: number,
     slug: string,
     name: string,
-    price: number,
+    price: number | string,
     image: string,
     texture: string,
-    weight: number,
+    weight: number | string,
     size: string,
     description: string,
     category: string
@@ -24,12 +24,13 @@ export const Product = {
 
     response(product: ProductType){
         return {
+            id: product.id,
             slug: product.slug,
             name: product.name,
-            price: product.price,
+            price: parseFloat(product.price as string),
             image: product.image,
             texture: product.texture,
-            weight: product.weight as number,
+            weight: parseFloat(product.weight as string),
             size: product.size,
             description: product.description,
             category: product.category

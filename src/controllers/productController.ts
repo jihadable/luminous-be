@@ -10,7 +10,7 @@ export const getAllProducts = async(req: Request, res: Response): Promise<Respon
 
         return res.status(200).json({
             ...defaultResponse(200, true, "Berhasil mendapatkan semua produk"),
-            products: products.map(product => Product.response({...product, price: parseFloat(product.price), weight: parseFloat(product.weight), }))
+            products: products.map(product => Product.response(product))
         })
     } catch(error){
         return serverErrorResponse(error, res)
