@@ -1,13 +1,12 @@
-import { Prisma, PrismaClient } from "../../generated/prisma";
-import { DefaultArgs } from "../../generated/prisma/runtime/library";
+import { PrismaClient } from "../../generated/prisma";
 import NotFoundError from "../errors/NotFoundError";
 import StorageService from "./StorageService";
 
 export default class ProductService {
-    private db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+    private db: PrismaClient
     private storageService: StorageService
 
-    constructor(db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>, storageService: StorageService){
+    constructor(db: PrismaClient, storageService: StorageService){
         this.db = db
         this.storageService = storageService
     }

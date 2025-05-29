@@ -7,6 +7,7 @@
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "linux-musl"]
 }
 
 datasource db {
@@ -14,9 +15,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  user
+  admin
+}
+
 model User {
   id String @id @default(uuid())
-  role String
+  role Role
   name String 
   email String @unique
   password String

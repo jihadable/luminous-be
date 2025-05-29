@@ -1,17 +1,10 @@
 import axios from "axios";
 import path from "path";
 import { v4 as uuid } from "uuid";
-import { Prisma, PrismaClient } from "../../generated/prisma";
-import { DefaultArgs } from "../../generated/prisma/runtime/library";
 
 export default class StorageService {
-    private db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
     private baseURL: string = process.env.IMAGE_API_ENDPOINT || ""
     private apiKey: string = process.env.IMAGE_API_KEY || ""
-
-    constructor(db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>){
-        this.db = db
-    }
 
     async addImage(image: Express.Multer.File){
         try {

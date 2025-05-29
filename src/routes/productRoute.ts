@@ -1,13 +1,12 @@
 import { Router } from "express";
-import { Prisma, PrismaClient } from "../../generated/prisma";
-import { DefaultArgs } from "../../generated/prisma/runtime/library";
+import { PrismaClient } from "../../generated/prisma";
 import ProductHandler from "../handler/ProductHandler";
 import uploadImage from "../middleware/storageMiddleware";
 import ProductService from "../service/ProductService";
 import StorageService from "../service/StorageService";
 
-export default function productRouter(db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>){
-    const storageService = new StorageService(db)
+export default function productRouter(db: PrismaClient){
+    const storageService = new StorageService()
     const service = new ProductService(db, storageService)
     const handler = new ProductHandler(service)
     const productRoute = Router()

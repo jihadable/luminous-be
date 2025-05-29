@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import BadRequestError from "../errors/BadRequestError";
 import ProductService from "../service/ProductService";
 
 export default class ProductHandler {
@@ -20,7 +21,7 @@ export default class ProductHandler {
             const { file } = req 
     
             if (!file){
-                return
+                throw new BadRequestError("Gambar harus diisi")
             }
     
             const product = await this.service.addProduct({ name, price, stock, description, category_id, image: file })
@@ -34,7 +35,7 @@ export default class ProductHandler {
         }
     }
 
-    async getProducts(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async getProducts(_req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const products = await this.service.getProducts()
 
@@ -68,7 +69,7 @@ export default class ProductHandler {
             const { file } = req 
     
             if (!file){
-                return
+                throw new BadRequestError("Gambar harus diisi")
             }
     
             const product = await this.service.updateProductById(id, { name, price, stock, description, category_id, image: file })

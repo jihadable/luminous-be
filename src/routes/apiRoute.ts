@@ -1,11 +1,10 @@
 import { Router } from "express";
-import { Prisma, PrismaClient } from "../../generated/prisma";
-import { DefaultArgs } from "../../generated/prisma/runtime/library";
+import { PrismaClient } from "../../generated/prisma";
 import errorHandlerMiddleware from "../middleware/errorHandlerMiddleware";
 import productRouter from "./productRoute";
 import userRouter from "./userRoute";
 
-export default function apiRouter(db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>): Router {
+export default function apiRouter(db: PrismaClient): Router {
     const apiRoute = Router()
 
     apiRoute.use("/users", userRouter(db))

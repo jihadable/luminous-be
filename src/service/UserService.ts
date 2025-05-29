@@ -1,20 +1,20 @@
 import { compareSync, hash } from "bcrypt";
-import { Prisma, PrismaClient } from "../../generated/prisma";
-import { DefaultArgs } from "../../generated/prisma/runtime/library";
+import { PrismaClient } from "../../generated/prisma";
 import BadRequestError from "../errors/BadRequestError";
 import userMapper from "../utils/userMapper";
 
 export default class UserService {
-    private db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>
+    private db: PrismaClient
 
-    constructor(db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>){
+    constructor(db: PrismaClient){
         this.db = db
     }
 
     async addUser({ name, email, password }: { name: string, email: string, password: string }){
+        const role = "user"
         const hashedPassword = await hash(password, 10)
         const user = await this.db.user.create({
-            data: { name, email, password: hashedPassword }
+            data: { name, role, email, password: hashedPassword }
         })
 
         return userMapper.response(user)
