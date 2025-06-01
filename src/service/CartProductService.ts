@@ -22,4 +22,17 @@ export default class CartProductService {
 
         return cartProducts
     }
+
+    async deleteCartProduct(cartId: string, productId: string){
+        await this.getCartProducts(cartId)
+
+        await this.db.cartProducts.delete({
+            where: { 
+                cart_id_product_id: {
+                    cart_id: cartId,
+                    product_id: productId
+                }
+            }
+        })
+    }
 }
