@@ -1,5 +1,5 @@
 import DB from "../../src/database/db"
-import categories from "./data/categories"
+import getCategories from "./data/categories"
 import getUsers from "./data/users"
 const db = DB()
 
@@ -16,8 +16,16 @@ async function seed(){
     })
 
     await db.category.createMany({
-        data: categories
+        data: getCategories()
     })
+
+    const categories = await db.category.findMany()
+    // const kitchen = categories.filter(category => category.name === "kitchen")[0].id
+    // const furniture = categories.filter(category => category.name === "furniture")[0].id
+    // const bedroom = categories.filter(category => category.name === "bedroom")[0].id
+    // const electronic = categories.filter(category => category.name === "kitchen")[0].id
+
+    
 }
 
 seed()

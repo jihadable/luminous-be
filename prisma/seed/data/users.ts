@@ -1,7 +1,7 @@
 import { hash } from "bcrypt"
 import { Role } from "../../../generated/prisma"
 
-async function getUsers() {
+export default async function getUsers() {
     const password = process.env.PRIVATE_PASSWORD || ""
 
     return [
@@ -19,5 +19,3 @@ async function getUsers() {
         }
     ]
 }
-
-export default getUsers
