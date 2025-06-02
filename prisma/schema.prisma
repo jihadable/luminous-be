@@ -16,7 +16,7 @@ datasource db {
 }
 
 enum Role {
-  user
+  customer
   admin
 }
 
@@ -57,7 +57,7 @@ model Product {
   updated_at DateTime @updatedAt
 
   category Category @relation(fields: [category_id], references: [id])
-  cart_products CartProducts[]
+  cart_products CartProduct[]
 
   @@map("products")
 }
@@ -69,12 +69,12 @@ model Cart {
   updated_at DateTime @updatedAt
 
   user User @relation(fields: [user_id], references: [id])
-  cart_products CartProducts[]
+  cart_products CartProduct[]
 
   @@map("carts")
 }
 
-model CartProducts {
+model CartProduct {
   id String @id @default(uuid())
   cart_id String 
   product_id String

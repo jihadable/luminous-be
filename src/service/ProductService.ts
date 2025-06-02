@@ -1,5 +1,6 @@
 import { PrismaClient } from "../../generated/prisma";
 import NotFoundError from "../errors/NotFoundError";
+import productMapper from "../utils/mapper/productMapper";
 import StorageService from "./StorageService";
 
 export default class ProductService {
@@ -17,28 +18,50 @@ export default class ProductService {
     ){
         const image_url = await this.storageService.addImage(image)
         const product = await this.db.product.create({
-            data: { name, price, stock, description, category_id, image_url }
+            data: { name, price, stock, description, category_id, image_url },
+            include: {
+                category: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
         })
 
-        return product
+        return productMapper.response(product)
     }
 
     async getProducts(){
-        const products = await this.db.product.findMany()
+        const products = await this.db.product.findMany({
+            include: {
+                category: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        })
 
-        return products
+        return products.map(product => productMapper.response(product))
     }
 
     async getProductById(id: string){
         const product = await this.db.product.findUnique({
-            where: { id }
+            where: { id },
+            include: {
+                category: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
         })
         
         if (!product){
             throw new NotFoundError("Produk tidak ditemukan")
         }
 
-        return product
+        return productMapper.response(product)
     }
 
     async updateProductById(
@@ -46,7 +69,13 @@ export default class ProductService {
         { name, price, stock, description, category_id, image }: 
         { name: string, price: number, stock: number, description: string, category_id: string, image: Express.Multer.File | null }
     ){
-        let product = await this.getProductById(id)
+        let product = await this.db.product.findUnique({
+            where: { id }
+        })
+
+        if (!product){
+            throw new NotFoundError("Produk tidak ditemukan")
+        }
 
         if (image){
             await this.storageService.updateImage(product.image_url, image)

@@ -2,10 +2,12 @@ import { Router } from "express";
 import { PrismaClient } from "../../generated/prisma";
 import UserHandler from "../handler/UserHandler";
 import authMiddleware from "../middleware/authMiddleware";
+import CartService from "../service/CartService";
 import UserService from "../service/UserService";
 
 export default function userRouter(db: PrismaClient): Router {
-    const service = new UserService(db)
+    const cartService = new CartService(db)
+    const service = new UserService(db, cartService)
     const handler = new UserHandler(service)
     const userRoute = Router()
 

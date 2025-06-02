@@ -1,3 +1,5 @@
+import { User } from "../../../generated/prisma"
+
 const userMapper = {
     response: (user: User) => ({
         id: user.id,
