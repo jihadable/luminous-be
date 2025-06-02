@@ -221,4 +221,6 @@ export default function getProducts(){
             size: "80cm x 30cm"
         }
     ]
+
+    return products
 }

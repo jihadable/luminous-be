@@ -15,17 +15,17 @@ async function seed(){
         data: users
     })
 
-    await db.category.createMany({
+    const categories = await db.category.createManyAndReturn({
         data: getCategories()
     })
-
-    const categories = await db.category.findMany()
     // const kitchen = categories.filter(category => category.name === "kitchen")[0].id
     // const furniture = categories.filter(category => category.name === "furniture")[0].id
     // const bedroom = categories.filter(category => category.name === "bedroom")[0].id
     // const electronic = categories.filter(category => category.name === "kitchen")[0].id
 
-    
+    // await db.product.createManyAndReturn({
+    //     data: getProducts()
+    // })
 }
 
 seed()

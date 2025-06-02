@@ -13,12 +13,12 @@ export default class ProductService {
     }
 
     async addProduct(
-        { name, price, stock, description, category_id, image }: 
-        { name: string, price: number, stock: number, description: string, category_id: string, image: Express.Multer.File }
+        { name, price, stock, texture, weight, size, description, category_id, image }: 
+        { name: string, price: number, stock: number, texture: string, weight: string, size: string, description: string, category_id: string, image: Express.Multer.File }
     ){
         const image_url = await this.storageService.addImage(image)
         const product = await this.db.product.create({
-            data: { name, price, stock, description, category_id, image_url },
+            data: { name, price, stock, texture, weight, size, description, category_id, image_url },
             include: {
                 category: {
                     select: {
@@ -66,8 +66,8 @@ export default class ProductService {
 
     async updateProductById(
         id: string, 
-        { name, price, stock, description, category_id, image }: 
-        { name: string, price: number, stock: number, description: string, category_id: string, image: Express.Multer.File | null }
+        { name, price, stock, texture, weight, size, description, category_id, image }: 
+        { name: string, price: number, stock: number, texture: string, weight: string, size: string, description: string, category_id: string, image: Express.Multer.File | null }
     ){
         let product = await this.db.product.findUnique({
             where: { id }

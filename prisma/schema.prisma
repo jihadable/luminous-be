@@ -50,6 +50,9 @@ model Product {
   name String 
   price Decimal
   stock Int
+  texture String
+  weight String
+  size String
   description String
   image_url String
   category_id String 
