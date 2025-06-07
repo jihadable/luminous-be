@@ -1,6 +1,7 @@
 import { compareSync, hash } from "bcrypt";
 import { PrismaClient, Role } from "../../generated/prisma";
 import BadRequestError from "../errors/BadRequestError";
+import NotFoundError from "../errors/NotFoundError";
 import userMapper from "../utils/mapper/userMapper";
 import CartService from "./CartService";
 
@@ -20,6 +21,18 @@ export default class UserService {
             data: { name, role, email, password: hashedPassword }
         })
         await this.cartService.addCart(user.id)
+
+        return userMapper.response(user)
+    }
+
+    async getUserById(id: string){
+        const user = await this.db.user.findUnique({
+            where: { id }
+        })
+
+        if (!user){
+            throw new NotFoundError("Pengguna tidak ditemukan")
+        }
 
         return userMapper.response(user)
     }

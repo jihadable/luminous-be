@@ -12,6 +12,7 @@ export default function userRouter(db: PrismaClient): Router {
     const userRoute = Router()
 
     userRoute.post("/register", handler.postUser)
+    userRoute.get("/", authMiddleware, handler.getUserById)
     userRoute.put("/", authMiddleware, handler.updateUser)
     userRoute.post("/login", handler.verifyUser)
 

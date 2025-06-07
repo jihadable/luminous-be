@@ -9,11 +9,12 @@ export default class UserHandler {
         this.service = service
 
         this.postUser = this.postUser.bind(this)
+        this.getUserById = this.getUserById.bind(this)
         this.updateUser = this.updateUser.bind(this)
         this.verifyUser = this.verifyUser.bind(this)
     }
 
-    async postUser (req: Request, res: Response, next: NextFunction): Promise<void> {
+    async postUser(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { name, email, password } = req.body
             const user = await this.service.addUser({ name, email, password })
@@ -22,6 +23,20 @@ export default class UserHandler {
             res.status(201).json({
                 status: "success",
                 data: { user, token }
+            })
+        } catch(error){
+            next(error)
+        }
+    }
+
+    async getUserById(_: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { user_id } = res.locals
+            const user = await this.service.getUserById(user_id)
+
+            res.status(200).json({
+                status: "success",
+                data: { user }
             })
         } catch(error){
             next(error)
