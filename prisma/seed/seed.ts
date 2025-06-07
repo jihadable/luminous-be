@@ -1,5 +1,9 @@
+import fs from "fs"
+import path from "path"
 import DB from "../../src/database/db"
+import StorageService from "../../src/service/StorageService"
 import getCategories from "./data/categories"
+import getProducts from "./data/products"
 import getUsers from "./data/users"
 const db = DB()
 
@@ -18,19 +22,37 @@ async function seed(){
     const categories = await db.category.createManyAndReturn({
         data: getCategories()
     })
-    // const kitchen = categories.filter(category => category.name === "kitchen")[0].id
-    // const furniture = categories.filter(category => category.name === "furniture")[0].id
-    // const bedroom = categories.filter(category => category.name === "bedroom")[0].id
-    // const electronic = categories.filter(category => category.name === "kitchen")[0].id
 
-    // await db.product.createManyAndReturn({
-    //     data: getProducts()
-    // })
+    const storageService = new StorageService()
+    for (const product of getProducts()) {
+        const category = categories.find(c => c.name === product.category_id)
+        if (!category) {
+            console.log(product)
+            return
+        }
+
+        const imagePath = path.join(__dirname, 'data/images', product.image_url)
+
+        const fileMock = {
+            originalname: product.image_url,
+            buffer: fs.readFileSync(imagePath),
+            mimetype: "image/jpeg"
+        } as Express.Multer.File
+
+        const uploadedImageName = await storageService.addImage(fileMock)
+
+        await db.product.create({
+            data: {...product, image_url: uploadedImageName, category_id: category.id, stock: 100}
+        })
+    }
 }
 
 seed()
+    .then(() => {
+        console.log("✅ Seeding completed successfully.")
+    })
     .catch(error => {
-        console.error(error)
+        console.error("❌ Seeding failed:", error)
         process.exit(1)
     })
     .finally(() => db.$disconnect())

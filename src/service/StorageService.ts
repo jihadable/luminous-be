@@ -13,7 +13,8 @@ export default class StorageService {
     
             await axios.post(`${this.baseURL}/${imageName}`, image.buffer, {
                 headers: {
-                    "Authorization": `Bearer ${this.apiKey}`
+                    "Authorization": `Bearer ${this.apiKey}`,
+                    "Content-Type": image.mimetype
                 }
             })
 

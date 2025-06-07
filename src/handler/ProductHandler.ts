@@ -17,14 +17,14 @@ export default class ProductHandler {
 
     async postProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { name, price, stock, description, category_id } = req.body
+            const { name, price, stock, description, size, weight, texture, category_id } = req.body
             const { file } = req 
     
             if (!file){
                 throw new BadRequestError("Gambar harus diisi")
             }
     
-            const product = await this.service.addProduct({ name, price, stock, description, category_id, image: file })
+            const product = await this.service.addProduct({ name, price, stock, description, size, weight, texture, category_id, image: file })
     
             res.status(201).json({
                 status: "success",
@@ -65,14 +65,14 @@ export default class ProductHandler {
     async updateProductById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id } = req.params
-            const { name, price, stock, description, category_id } = req.body
+            const { name, price, stock, description, size, weight, texture, category_id } = req.body
             const { file } = req 
     
             if (!file){
                 throw new BadRequestError("Gambar harus diisi")
             }
     
-            const product = await this.service.updateProductById(id, { name, price, stock, description, category_id, image: file })
+            const product = await this.service.updateProductById(id, { name, price, stock, description, size, weight, texture,category_id, image: file })
     
             res.status(200).json({
                 status: "success",
