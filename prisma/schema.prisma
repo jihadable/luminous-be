@@ -84,8 +84,8 @@ model CartProduct {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  cart Cart @relation(fields: [cart_id], references: [id])
-  product Product @relation(fields: [product_id], references: [id])
+  cart Cart @relation(fields: [cart_id], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
   @@unique([cart_id, product_id])
 

@@ -2,16 +2,18 @@ import { Router } from "express";
 import { PrismaClient } from "../../generated/prisma";
 import errorHandlerMiddleware from "../middleware/errorHandlerMiddleware";
 import cartProductRouter from "./cartProductRoute";
+import categoryRouter from "./categoryRoute";
 import productRouter from "./productRoute";
 import userRouter from "./userRoute";
 
-export default function apiRouter(db: PrismaClient): Router {
-    const apiRoute = Router()
+export default function apiRouter(db: PrismaClient){
+    const router = Router()
 
-    apiRoute.use("/users", userRouter(db))
-    apiRoute.use("/products", productRouter(db))
-    apiRoute.use("/carts", cartProductRouter(db))
-    apiRoute.use(errorHandlerMiddleware)
+    router.use("/users", userRouter(db))
+    router.use("/categories", categoryRouter(db))
+    router.use("/products", productRouter(db))
+    router.use("/carts", cartProductRouter(db))
+    router.use(errorHandlerMiddleware)
 
-    return apiRoute
+    return router
 }

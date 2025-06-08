@@ -2,7 +2,6 @@ import { compareSync, hash } from "bcrypt";
 import { PrismaClient, Role } from "../../generated/prisma";
 import BadRequestError from "../errors/BadRequestError";
 import NotFoundError from "../errors/NotFoundError";
-import userMapper from "../utils/mapper/userMapper";
 import CartService from "./CartService";
 
 export default class UserService {
@@ -22,7 +21,7 @@ export default class UserService {
         })
         await this.cartService.addCart(user.id)
 
-        return userMapper.response(user)
+        return user
     }
 
     async getUserById(id: string){
@@ -34,7 +33,7 @@ export default class UserService {
             throw new NotFoundError("Pengguna tidak ditemukan")
         }
 
-        return userMapper.response(user)
+        return user
     }
 
     async updateUser(id: string, { name }: { name: string }){
@@ -43,7 +42,7 @@ export default class UserService {
             data: { name }
         })
 
-        return userMapper.response(user)
+        return user
     }
 
     async verifyUser(email: string, password: string){
@@ -59,7 +58,7 @@ export default class UserService {
             throw new BadRequestError("Email atau password salah")
         }
 
-        return userMapper.response(user)
+        return user
     }
 }
 

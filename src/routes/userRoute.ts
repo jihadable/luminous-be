@@ -4,17 +4,18 @@ import UserHandler from "../handler/UserHandler";
 import authMiddleware from "../middleware/authMiddleware";
 import CartService from "../service/CartService";
 import UserService from "../service/UserService";
+import userValidator from "../validator/userValidator";
 
-export default function userRouter(db: PrismaClient): Router {
+export default function userRouter(db: PrismaClient){
     const cartService = new CartService(db)
     const service = new UserService(db, cartService)
-    const handler = new UserHandler(service)
-    const userRoute = Router()
+    const handler = new UserHandler(service, userValidator)
+    const router = Router()
 
-    userRoute.post("/register", handler.postUser)
-    userRoute.get("/", authMiddleware, handler.getUserById)
-    userRoute.put("/", authMiddleware, handler.updateUser)
-    userRoute.post("/login", handler.verifyUser)
+    router.post("/register", handler.postUser)
+    router.get("/", authMiddleware, handler.getUserById)
+    router.put("/", authMiddleware, handler.updateUser)
+    router.post("/login", handler.verifyUser)
 
-    return userRoute
+    return router
 }

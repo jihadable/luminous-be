@@ -19,9 +19,10 @@ export default function authMiddleware(req: Request, res: Response, next: NextFu
         const payload = verify(token, process.env.JWT_SECRET || "") as JwtPayload
 
         res.locals.user_id = payload.id
+        res.locals.role = payload.role
 
         next()
     } catch(error){
-        console.log(error)
+        next(error)
     }
 }

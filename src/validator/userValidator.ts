@@ -1,7 +1,13 @@
 import BadRequestError from "../errors/BadRequestError"
 import { LoginRequest, RegisterRequest, UpdateUserRequest } from "../model/request/userRequest"
 
-const userValidator = {
+export type UserValidator = {
+    validateRegisterPayload: (payload: any) => void
+    validateUpdateUserPayload: (payload: any) => void
+    validateLoginPayload: (payload: any) => void
+}
+
+const userValidator: UserValidator = {
     validateRegisterPayload: (payload: any) => {
         const result = RegisterRequest.validate(payload)
 

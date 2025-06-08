@@ -1,6 +1,5 @@
 import { PrismaClient } from "../../generated/prisma";
 import NotFoundError from "../errors/NotFoundError";
-import productMapper from "../utils/mapper/productMapper";
 import StorageService from "./StorageService";
 
 export default class ProductService {
@@ -28,7 +27,7 @@ export default class ProductService {
             }
         })
 
-        return productMapper.response(product)
+        return product
     }
 
     async getProducts(){
@@ -42,7 +41,7 @@ export default class ProductService {
             }
         })
 
-        return products.map(product => productMapper.response(product))
+        return products
     }
 
     async getProductById(id: string){
@@ -61,7 +60,7 @@ export default class ProductService {
             throw new NotFoundError("Produk tidak ditemukan")
         }
 
-        return productMapper.response(product)
+        return product
     }
 
     async updateProductById(
@@ -69,13 +68,7 @@ export default class ProductService {
         { name, price, stock, texture, weight, size, description, category_id, image }: 
         { name: string, price: number, stock: number, texture: string, weight: string, size: string, description: string, category_id: string, image: Express.Multer.File | null }
     ){
-        let product = await this.db.product.findUnique({
-            where: { id }
-        })
-
-        if (!product){
-            throw new NotFoundError("Produk tidak ditemukan")
-        }
+        let product = await this.getProductById(id)
 
         if (image){
             await this.storageService.updateImage(product.image_url, image)
@@ -83,7 +76,14 @@ export default class ProductService {
 
         product = await this.db.product.update({
             where: { id },
-            data: { name, price, stock, description, category_id }
+            data: { name, price, stock, texture, weight, size, description, category_id },
+            include: {
+                category: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
         })
 
         return product

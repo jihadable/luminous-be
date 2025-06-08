@@ -1,5 +1,5 @@
 import { PrismaClient } from "../../generated/prisma"
-import cartProductMapper from "../utils/mapper/cartProductMapper"
+import NotFoundError from "../errors/NotFoundError"
 
 export default class CartProductService {
     private db: PrismaClient
@@ -24,14 +24,13 @@ export default class CartProductService {
             }
         })
 
-        return cartProductMapper.response(cartProduct)
+        return cartProduct
     }
 
     async getCartProducts(cartId: string){
         const cartProducts = await this.db.cartProduct.findMany({
             where: { cart_id: cartId },
-            select: {
-                id: true,
+            include: {
                 product: {
                     include: {
                         category: {
@@ -47,8 +46,25 @@ export default class CartProductService {
         return cartProducts
     }
 
+    async getCartProduct(cartId: string, productId: string){
+        const cartProduct = await this.db.cartProduct.findUnique({
+            where: { 
+                cart_id_product_id: {
+                    cart_id: cartId,
+                    product_id: productId
+                } 
+            }
+        })
+
+        if (!cartProduct){
+            throw new NotFoundError("Produk keranjang tidak ditemukan")
+        }
+
+        return cartProduct
+    }
+
     async deleteCartProduct(cartId: string, productId: string){
-        await this.getCartProducts(cartId)
+        await this.getCartProduct(cartId, productId)
 
         await this.db.cartProduct.delete({
             where: { 
