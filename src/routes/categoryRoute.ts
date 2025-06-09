@@ -13,8 +13,8 @@ export default function categoryRouter(db: PrismaClient){
 
     router.post("/", authMiddleware, authorizeRoleMiddleware(Role.admin), handler.postCategory)
     router.get("/", handler.getCategories)
-    router.get("/:id", handler.getCategoryById)
-    router.delete("/:id", authMiddleware, authorizeRoleMiddleware(Role.admin), handler.deleteCategoryById)
+    router.get("/:category_id", handler.getCategoryById)
+    router.delete("/:category_id", authMiddleware, authorizeRoleMiddleware(Role.admin), handler.deleteCategoryById)
 
     return router
 }

@@ -2,7 +2,7 @@ import request from 'supertest'
 import app from './testApp'
 
 describe("User API", () => {
-    let JWT: string 
+    let jwt: string
 
     test("Register with valid payload", async() => {
         const response = await request(app).post("/api/users/register").send({
@@ -18,7 +18,7 @@ describe("User API", () => {
 
         expect(response.body.data).toHaveProperty("user")
         expect(response.body.data).toHaveProperty("token")
-        JWT = response.body.data.token
+        jwt = response.body.data.token
 
         expect(response.body.data.user).toHaveProperty("id")
         expect(response.body.data.user).toHaveProperty("role")
@@ -43,7 +43,7 @@ describe("User API", () => {
     
     test("Get user data with token", async() => {
         const response = await request(app).get("/api/users").set({
-            "Authorization": `Bearer ${JWT}`
+            "Authorization": `Bearer ${jwt}`
         })
 
         expect(response.status).toBe(200)
@@ -77,7 +77,7 @@ describe("User API", () => {
     test("Update user data", async() => {
         const response = await request(app).put("/api/users")
             .set({
-                "Authorization": `Bearer ${JWT}`
+                "Authorization": `Bearer ${jwt}`
             })
             .send({
                 name: "Update test"

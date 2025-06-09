@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import CategoryService from "../service/CategoryService";
+import categoryMapper from "../utils/mapper/categoryMapper";
 import { CategoryValidator } from "../validator/categoryValidator";
 
 export default class CategoryHandler {
@@ -25,7 +26,7 @@ export default class CategoryHandler {
 
             res.status(201).json({
                 status: "success",
-                data: { category }
+                data: { category: categoryMapper.response(category) }
             })
         } catch(error){
             next(error)
@@ -38,7 +39,7 @@ export default class CategoryHandler {
 
             res.status(200).json({
                 status: "success",
-                data: { categories }
+                data: { categories: categories.map(category => categoryMapper.response(category)) }
             })
         } catch(error){
             next(error)
@@ -47,12 +48,12 @@ export default class CategoryHandler {
 
     async getCategoryById(req: Request, res: Response, next: NextFunction){
         try {
-            const { id } = req.params
-            const category = this.service.getCategoryById(id)
+            const { category_id } = req.params
+            const category = await this.service.getCategoryById(category_id)
 
             res.status(200).json({
                 status: "success",
-                data: { category }
+                data: { category: categoryMapper.response(category) }
             })
         } catch(error){
             next(error)
@@ -61,8 +62,8 @@ export default class CategoryHandler {
 
     async deleteCategoryById(req: Request, res: Response, next: NextFunction){
         try {
-            const { id } = req.params
-            await this.service.deleteCategoryById(id)
+            const { category_id } = req.params
+            await this.service.deleteCategoryById(category_id)
 
             res.status(200).json({
                 status: "success"

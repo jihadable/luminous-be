@@ -56,8 +56,8 @@ constructor(service: ProductService, validator: ProductValidator){
 
     async getProductById(req: Request, res: Response, next: NextFunction){
         try {
-            const { id } = req.params
-            const product = await this.service.getProductById(id)
+            const { product_id } = req.params
+            const product = await this.service.getProductById(product_id)
     
             res.status(200).json({
                 status: "success",
@@ -72,7 +72,7 @@ constructor(service: ProductService, validator: ProductValidator){
         try {
             this.validator.validateUpdateProductPayload(req.body)
             
-            const { id } = req.params
+            const { product_id } = req.params
             const { name, price, stock, description, size, weight, texture, category_id } = req.body
             const { file } = req 
     
@@ -80,7 +80,7 @@ constructor(service: ProductService, validator: ProductValidator){
                 throw new BadRequestError("Gambar harus diisi")
             }
     
-            const product = await this.service.updateProductById(id, { name, price, stock, description, size, weight, texture,category_id, image: file })
+            const product = await this.service.updateProductById(product_id, { name, price, stock, description, size, weight, texture,category_id, image: file })
     
             res.status(200).json({
                 status: "success",
@@ -93,8 +93,8 @@ constructor(service: ProductService, validator: ProductValidator){
 
     async deleteProductById(req: Request, res: Response, next: NextFunction){
         try {
-            const { id } = req.params
-            await this.service.deleteProductById(id)
+            const { product_id } = req.params
+            await this.service.deleteProductById(product_id)
 
             res.status(200).json({
                 status: "success"

@@ -16,9 +16,9 @@ export default class CartProductHandler {
         try {
             this.validator.validatePostCartProductPayload(req.body)
 
-            const { cartId } = req.params
+            const { cart_id } = req.params
             const { product_id } = req.body
-            const cartProduct = await this.service.addCartProduct(cartId, product_id)
+            const cartProduct = await this.service.addCartProduct(cart_id, product_id)
 
             res.status(201).json({
                 status: "success",
@@ -31,8 +31,8 @@ export default class CartProductHandler {
 
     async getCartProducts(req: Request, res: Response, next: NextFunction){
         try {
-            const { cartId } = req.params
-            const cartProducts = await this.service.getCartProducts(cartId)
+            const { cart_id } = req.params
+            const cartProducts = await this.service.getCartProducts(cart_id)
 
             res.status(200).json({
                 status: "success",
@@ -47,9 +47,9 @@ export default class CartProductHandler {
         try {
             this.validator.validateDeleteCartProductPayload(req.body)
 
-            const { cartId } = req.params
+            const { cart_id } = req.params
             const { product_id } = req.body
-            await this.service.deleteCartProduct(cartId, product_id)
+            await this.service.deleteCartProduct(cart_id, product_id)
 
             res.status(200).json({
                 status: "success"

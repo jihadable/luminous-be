@@ -16,9 +16,9 @@ export default function productRouter(db: PrismaClient){
 
     router.post("/", authMiddleware, authorizeRoleMiddleware(Role.admin), uploadImage.single("image"), handler.postProduct)
     router.get("/", handler.getProducts)
-    router.get("/:id", handler.getProductById)
-    router.put("/:id", authMiddleware, authorizeRoleMiddleware(Role.admin), uploadImage.single("image"), handler.updateProductById)
-    router.delete("/:id", authMiddleware, authorizeRoleMiddleware(Role.admin), handler.deleteProductById)
+    router.get("/:product_id", handler.getProductById)
+    router.put("/:product_id", authMiddleware, authorizeRoleMiddleware(Role.admin), uploadImage.single("image"), handler.updateProductById)
+    router.delete("/:product_id", authMiddleware, authorizeRoleMiddleware(Role.admin), handler.deleteProductById)
 
     return router
 }
