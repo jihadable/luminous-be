@@ -10,6 +10,10 @@ export default class CartProductHandler {
     constructor(service: CartProductService, validator: CartProductValidator){
         this.service = service
         this.validator = validator
+
+        this.postCartProduct = this.postCartProduct.bind(this)
+        this.getCartProducts = this.getCartProducts.bind(this)
+        this.deleteCartProduct = this.deleteCartProduct.bind(this)
     }
 
     async postCartProduct(req: Request, res: Response, next: NextFunction){

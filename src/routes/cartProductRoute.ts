@@ -4,10 +4,12 @@ import CartProductHandler from "../handler/CartProductHandler";
 import authMiddleware from "../middleware/authMiddleware";
 import authorizeRoleMiddleware from "../middleware/authorizeRoleMiddleware";
 import CartProductService from "../service/CartProductService";
+import CartService from "../service/CartService";
 import cartProductValidator from "../validator/cartProductValidator";
 
 export default function cartProductRouter(db: PrismaClient){
-    const service = new CartProductService(db)
+    const cartService = new CartService(db)
+    const service = new CartProductService(db, cartService)
     const handler = new CartProductHandler(service, cartProductValidator)
     const router = Router()
 

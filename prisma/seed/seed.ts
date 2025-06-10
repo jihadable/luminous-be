@@ -1,5 +1,6 @@
 import fs from "fs"
 import path from "path"
+import { Role } from "../../generated/prisma"
 import DB from "../../src/database/db"
 import StorageService from "../../src/service/StorageService"
 import getCategories from "./data/categories"
@@ -14,9 +15,20 @@ async function seed(){
     await db.cart.deleteMany()
     await db.cartProduct.deleteMany()
 
-    const users = await getUsers()
-    await db.user.createMany({
-        data: users
+    const usersData = await getUsers()
+    const users = await db.user.createManyAndReturn({
+        data: usersData
+    })
+
+    const customer = users.find(user => user.role === Role.customer)
+    if (!customer){
+        return
+    }
+
+    await db.cart.create({
+        data: {
+            user_id: customer.id
+        }
     })
 
     const categories = await db.category.createManyAndReturn({
