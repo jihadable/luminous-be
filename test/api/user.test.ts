@@ -8,13 +8,15 @@ describe("User API", () => {
         const response = await request(app).post("/api/users/register").send({
             name: "Test",
             email: "test@gmail.com",
-            password: "abcddcba"
+            password: process.env.PRIVATE_PASSWORD
         })
 
         expect(response.status).toBe(201)
         
         expect(response.body).toHaveProperty("status")
         expect(response.body).toHaveProperty("data")
+
+        expect(response.body.status).toBe("success")
 
         expect(response.body.data).toHaveProperty("user")
         expect(response.body.data).toHaveProperty("token")
@@ -24,10 +26,12 @@ describe("User API", () => {
         expect(response.body.data.user).toHaveProperty("role")
         expect(response.body.data.user).toHaveProperty("name")
         expect(response.body.data.user).toHaveProperty("email")
+        expect(response.body.data.user).toHaveProperty("cart")
 
         expect(response.body.data.user.role).toBe("customer")
         expect(response.body.data.user.name).toBe("Test")
         expect(response.body.data.user.email).toBe("test@gmail.com")
+        expect(response.body.data.user.cart).toHaveProperty("id")
     })
 
     test("Register with invalid payload", async() => {
@@ -51,16 +55,20 @@ describe("User API", () => {
         expect(response.body).toHaveProperty("status")
         expect(response.body).toHaveProperty("data")
 
+        expect(response.body.status).toBe("success")
+
         expect(response.body.data).toHaveProperty("user")
 
         expect(response.body.data.user).toHaveProperty("id")
         expect(response.body.data.user).toHaveProperty("role")
         expect(response.body.data.user).toHaveProperty("name")
         expect(response.body.data.user).toHaveProperty("email")
+        expect(response.body.data.user).toHaveProperty("cart")
 
         expect(response.body.data.user.role).toBe("customer")
         expect(response.body.data.user.name).toBe("Test")
         expect(response.body.data.user.email).toBe("test@gmail.com")
+        expect(response.body.data.user.cart).toHaveProperty("id")
     })
 
     test("Get user data without token", async() => {
@@ -88,28 +96,34 @@ describe("User API", () => {
         expect(response.body).toHaveProperty("status")
         expect(response.body).toHaveProperty("data")
 
+        expect(response.body.status).toBe("success")
+
         expect(response.body.data).toHaveProperty("user")
 
         expect(response.body.data.user).toHaveProperty("id")
         expect(response.body.data.user).toHaveProperty("role")
         expect(response.body.data.user).toHaveProperty("name")
         expect(response.body.data.user).toHaveProperty("email")
+        expect(response.body.data.user).toHaveProperty("cart")
 
         expect(response.body.data.user.role).toBe("customer")
         expect(response.body.data.user.name).toBe("Update test")
         expect(response.body.data.user.email).toBe("test@gmail.com")
+        expect(response.body.data.user.cart).toHaveProperty("id")
     })
 
     test("Login with valid payload", async() => {
         const response = await request(app).post("/api/users/login").send({
             email: "test@gmail.com",
-            password: "abcddcba"
+            password: process.env.PRIVATE_PASSWORD
         })
 
         expect(response.status).toBe(200)
 
         expect(response.body).toHaveProperty("status")
         expect(response.body).toHaveProperty("data")
+
+        expect(response.body.status).toBe("success")
 
         expect(response.body.data).toHaveProperty("user")
         expect(response.body.data).toHaveProperty("token")
@@ -118,10 +132,12 @@ describe("User API", () => {
         expect(response.body.data.user).toHaveProperty("role")
         expect(response.body.data.user).toHaveProperty("name")
         expect(response.body.data.user).toHaveProperty("email")
+        expect(response.body.data.user).toHaveProperty("cart")
 
         expect(response.body.data.user.role).toBe("customer")
         expect(response.body.data.user.name).toBe("Update test")
         expect(response.body.data.user.email).toBe("test@gmail.com")        
+        expect(response.body.data.user.cart).toHaveProperty("id")        
     })
 
     test("Login with invalid payload", async() => {

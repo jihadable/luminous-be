@@ -21,19 +21,7 @@ export default class StorageService {
             return imageName
         } catch(error){
             console.log(error)
-            return ""
-        }
-    }
-
-    async updateImage(imageURL: string, file: Express.Multer.File){
-        try {  
-            await axios.put(`${this.baseURL}/${imageURL}`, file.buffer, {
-                headers: {
-                    "Authorization": `Bearer ${this.apiKey}`
-                }
-            })
-        } catch(error){
-            console.log(error)
+            throw new Error("Gambar gagal simpan")
         }
     }
 
@@ -46,6 +34,7 @@ export default class StorageService {
             })
         } catch(error){
             console.log(error)
+            throw new Error("Gambar gagal dihapus")
         }
     }
 }

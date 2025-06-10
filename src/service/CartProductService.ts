@@ -14,11 +14,7 @@ export default class CartProductService {
             include: {
                 product: {
                     include: {
-                        category: {
-                            select: {
-                                name: true
-                            }
-                        }
+                        category: true
                     }
                 }
             }
@@ -33,11 +29,7 @@ export default class CartProductService {
             include: {
                 product: {
                     include: {
-                        category: {
-                            select: {
-                                name: true
-                            }
-                        }
+                        category: true
                     }
                 }
             }

@@ -20,9 +20,9 @@ export default class UserHandler {
 
     async postUser(req: Request, res: Response, next: NextFunction){
         try {
-            this.validator.validateRegisterPayload(req.body)
+            const validatedReqBody = this.validator.validateRegisterPayload(req.body)
 
-            const { name, email, password } = req.body
+            const { name, email, password } = validatedReqBody
             const user = await this.service.addUser({ name, email, password })
             const token = generateJWT(user.id, user.role)
 
@@ -51,10 +51,10 @@ export default class UserHandler {
     
     async updateUser(req: Request, res: Response, next: NextFunction){
         try {
-            this.validator.validateUpdateUserPayload(req.body)
+            const validatedReqBody = this.validator.validateUpdateUserPayload(req.body)
 
             const { user_id } = res.locals
-            const { name } = req.body
+            const { name } = validatedReqBody
             const user = await this.service.updateUser(user_id, { name })
 
             res.status(200).json({
@@ -68,9 +68,9 @@ export default class UserHandler {
 
     async verifyUser(req: Request, res: Response, next: NextFunction){
         try {
-            this.validator.validateLoginPayload(req.body)
+            const validatedReqBody = this.validator.validateLoginPayload(req.body)
             
-            const { email, password } = req.body
+            const { email, password } = validatedReqBody
             const user = await this.service.verifyUser(email, password)
             const token = generateJWT(user.id, user.role)
 

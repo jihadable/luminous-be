@@ -8,7 +8,7 @@ export default class ProductHandler {
     private service: ProductService
     private validator: ProductValidator
 
-constructor(service: ProductService, validator: ProductValidator){
+    constructor(service: ProductService, validator: ProductValidator){
         this.service = service
         this.validator = validator
 
@@ -21,9 +21,9 @@ constructor(service: ProductService, validator: ProductValidator){
 
     async postProduct(req: Request, res: Response, next: NextFunction){
         try {
-            this.validator.validatePostProductPayload(req.body)
+            const validatedReqBody = this.validator.validatePostProductPayload(req.body)
 
-            const { name, price, stock, description, size, weight, texture, category_id } = req.body
+            const { name, price, stock, description, size, weight, texture, category_id } = validatedReqBody
             const { file } = req 
     
             if (!file){
@@ -70,10 +70,10 @@ constructor(service: ProductService, validator: ProductValidator){
 
     async updateProductById(req: Request, res: Response, next: NextFunction){
         try {
-            this.validator.validateUpdateProductPayload(req.body)
+            const validatedReqBody = this.validator.validateUpdateProductPayload(req.body)
             
             const { product_id } = req.params
-            const { name, price, stock, description, size, weight, texture, category_id } = req.body
+            const { name, price, stock, description, size, weight, texture, category_id } = validatedReqBody
             const { file } = req 
     
             if (!file){

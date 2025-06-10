@@ -17,16 +17,22 @@ export default class UserService {
         const role = Role.customer
         const hashedPassword = await hash(password, 10)
         const user = await this.db.user.create({
-            data: { name, role, email, password: hashedPassword }
+            data: { name, role, email, password: hashedPassword },
+            include: {
+                cart: true
+            }
         })
-        await this.cartService.addCart(user.id)
+        const cart = await this.cartService.addCart(user.id)
 
-        return user
+        return {...user, cart }
     }
 
     async getUserById(id: string){
         const user = await this.db.user.findUnique({
-            where: { id }
+            where: { id },
+            include: {
+                cart: true
+            }
         })
 
         if (!user){
@@ -39,7 +45,10 @@ export default class UserService {
     async updateUser(id: string, { name }: { name: string }){
         const user = await this.db.user.update({
             where: { id },
-            data: { name }
+            data: { name },
+            include: {
+                cart: true
+            }
         })
 
         return user
@@ -47,7 +56,10 @@ export default class UserService {
 
     async verifyUser(email: string, password: string){
         const user = await this.db.user.findUnique({
-            where: { email }
+            where: { email },
+            include: {
+                cart: true
+            }
         })
 
         if (!user){

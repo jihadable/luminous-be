@@ -19,9 +19,9 @@ export default class CategoryHandler {
 
     async postCategory(req: Request, res: Response, next: NextFunction){
         try {
-            this.validator.validatePostCategoryPayload(req.body)
+            const validatedReqBody = this.validator.validatePostCategoryPayload(req.body)
 
-            const { name } = req.body
+            const { name } = validatedReqBody
             const category = await this.service.addCategory({ name })
 
             res.status(201).json({

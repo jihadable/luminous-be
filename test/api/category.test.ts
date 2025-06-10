@@ -7,13 +7,15 @@ describe("Category API", () => {
     test("Login as admin", async() => {
         const response = await request(app).post("/api/users/login").send({
             email: "luminousadmin@gmail.com",
-            password: "abcddcba"
+            password: process.env.PRIVATE_PASSWORD
         })
 
         expect(response.status).toBe(200)
 
         expect(response.body).toHaveProperty("status")
         expect(response.body).toHaveProperty("data")
+
+        expect(response.body.status).toBe("success")
 
         expect(response.body.data).toHaveProperty("user")
         expect(response.body.data).toHaveProperty("token")
@@ -63,6 +65,8 @@ describe("Category API", () => {
 
         expect(response.body).toHaveProperty("status")
         expect(response.body).toHaveProperty("message")
+
+        expect(response.body.status).toBe("fail")
     })
 
     test("Get categories", async() => {
@@ -72,6 +76,8 @@ describe("Category API", () => {
 
         expect(response.body).toHaveProperty("status")
         expect(response.body).toHaveProperty("data")
+
+        expect(response.body.status).toBe("success")
 
         expect(response.body.data).toHaveProperty("categories")
 
@@ -87,6 +93,8 @@ describe("Category API", () => {
 
         expect(response.body).toHaveProperty("status")
         expect(response.body).toHaveProperty("data")
+
+        expect(response.body.status).toBe("success")
 
         expect(response.body.data).toHaveProperty("category")
 
