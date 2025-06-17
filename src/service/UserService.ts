@@ -13,11 +13,11 @@ export default class UserService {
         this.cartService = cartService
     }
 
-    async addUser({ name, email, password }: { name: string, email: string, password: string }){
+    async addUser({ name, email, password, phone, address }: { name: string, email: string, password: string, phone: string, address: string }){
         const role = Role.customer
         const hashedPassword = await hash(password, 10)
         const user = await this.db.user.create({
-            data: { name, role, email, password: hashedPassword },
+            data: { name, role, email, password: hashedPassword, phone, address },
             include: {
                 cart: true
             }
@@ -42,10 +42,10 @@ export default class UserService {
         return user
     }
 
-    async updateUser(id: string, { name }: { name: string }){
+    async updateUser(id: string, { name, phone, address }: { name: string, phone: string, address: string }){
         const user = await this.db.user.update({
             where: { id },
-            data: { name },
+            data: { name, phone, address },
             include: {
                 cart: true
             }

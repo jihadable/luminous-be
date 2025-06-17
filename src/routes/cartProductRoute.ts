@@ -15,7 +15,8 @@ export default function cartProductRouter(db: PrismaClient){
 
     router.post("/:cart_id", authMiddleware, authorizeRoleMiddleware(Role.customer), handler.postCartProduct)
     router.get("/:cart_id", authMiddleware, authorizeRoleMiddleware(Role.customer), handler.getCartProducts)
-    router.delete("/:cart_id", authMiddleware, authorizeRoleMiddleware(Role.customer), handler.deleteCartProduct)
+    router.put("/:cart_id", authMiddleware, authorizeRoleMiddleware(Role.customer), handler.updateCartProduct)
+    router.delete("/:cart_id/products/:product_id", authMiddleware, authorizeRoleMiddleware(Role.customer), handler.deleteCartProduct)
 
     return router
 }

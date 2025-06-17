@@ -8,7 +8,9 @@ describe("User API", () => {
         const response = await request(app).post("/api/users/register").send({
             name: "Test",
             email: "test@gmail.com",
-            password: process.env.PRIVATE_PASSWORD
+            password: process.env.PRIVATE_PASSWORD,
+            phone: "081234567890",
+            address: "Jl. Rambutan"
         })
 
         expect(response.status).toBe(201)
@@ -26,11 +28,15 @@ describe("User API", () => {
         expect(response.body.data.user).toHaveProperty("role")
         expect(response.body.data.user).toHaveProperty("name")
         expect(response.body.data.user).toHaveProperty("email")
+        expect(response.body.data.user).toHaveProperty("phone")
+        expect(response.body.data.user).toHaveProperty("address")
         expect(response.body.data.user).toHaveProperty("cart")
 
         expect(response.body.data.user.role).toBe("customer")
         expect(response.body.data.user.name).toBe("Test")
         expect(response.body.data.user.email).toBe("test@gmail.com")
+        expect(response.body.data.user.phone).toBe("081234567890")
+        expect(response.body.data.user.address).toBe("Jl. Rambutan")
         expect(response.body.data.user.cart).toHaveProperty("id")
     })
 
@@ -63,11 +69,15 @@ describe("User API", () => {
         expect(response.body.data.user).toHaveProperty("role")
         expect(response.body.data.user).toHaveProperty("name")
         expect(response.body.data.user).toHaveProperty("email")
+        expect(response.body.data.user).toHaveProperty("phone")
+        expect(response.body.data.user).toHaveProperty("address")
         expect(response.body.data.user).toHaveProperty("cart")
 
         expect(response.body.data.user.role).toBe("customer")
         expect(response.body.data.user.name).toBe("Test")
         expect(response.body.data.user.email).toBe("test@gmail.com")
+        expect(response.body.data.user.phone).toBe("081234567890")
+        expect(response.body.data.user.address).toBe("Jl. Rambutan")
         expect(response.body.data.user.cart).toHaveProperty("id")
     })
 
@@ -88,7 +98,9 @@ describe("User API", () => {
                 "Authorization": `Bearer ${jwt}`
             })
             .send({
-                name: "Update test"
+                name: "Update test",
+                phone: "081122334455",
+                address: "Jl. Durian"
             })
 
         expect(response.status).toBe(200)
@@ -104,11 +116,15 @@ describe("User API", () => {
         expect(response.body.data.user).toHaveProperty("role")
         expect(response.body.data.user).toHaveProperty("name")
         expect(response.body.data.user).toHaveProperty("email")
+        expect(response.body.data.user).toHaveProperty("phone")
+        expect(response.body.data.user).toHaveProperty("address")
         expect(response.body.data.user).toHaveProperty("cart")
 
         expect(response.body.data.user.role).toBe("customer")
         expect(response.body.data.user.name).toBe("Update test")
         expect(response.body.data.user.email).toBe("test@gmail.com")
+        expect(response.body.data.user.phone).toBe("081122334455")
+        expect(response.body.data.user.address).toBe("Jl. Durian")
         expect(response.body.data.user.cart).toHaveProperty("id")
     })
 
@@ -132,11 +148,15 @@ describe("User API", () => {
         expect(response.body.data.user).toHaveProperty("role")
         expect(response.body.data.user).toHaveProperty("name")
         expect(response.body.data.user).toHaveProperty("email")
+        expect(response.body.data.user).toHaveProperty("phone")
+        expect(response.body.data.user).toHaveProperty("address")
         expect(response.body.data.user).toHaveProperty("cart")
 
         expect(response.body.data.user.role).toBe("customer")
         expect(response.body.data.user.name).toBe("Update test")
-        expect(response.body.data.user.email).toBe("test@gmail.com")        
+        expect(response.body.data.user.email).toBe("test@gmail.com")
+        expect(response.body.data.user.phone).toBe("081122334455")
+        expect(response.body.data.user.address).toBe("Jl. Durian")        
         expect(response.body.data.user.cart).toHaveProperty("id")        
     })
 

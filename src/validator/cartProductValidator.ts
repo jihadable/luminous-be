@@ -1,9 +1,9 @@
 import BadRequestError from "../errors/BadRequestError"
-import { DeleteCartProductRequest, PostCartProductRequest } from "../model/request/cartProductRequest"
+import { PostCartProductRequest, UpdateCartProductRequest } from "../model/request/cartProductRequest"
 
 export type CartProductValidator = {
     validatePostCartProductPayload: (payload: any) => any
-    validateDeleteCartProductPayload: (payload: any) => any
+    validateUpdateCartProductPayload: (payload: any) => any
 }
 
 const cartProductValidator: CartProductValidator = {
@@ -16,14 +16,14 @@ const cartProductValidator: CartProductValidator = {
 
         return result.value
     },
-    
-    validateDeleteCartProductPayload: (payload: any) => {
-        const result = DeleteCartProductRequest.validate(payload)
-        
+
+    validateUpdateCartProductPayload: (payload: any) => {
+        const result = UpdateCartProductRequest.validate(payload)
+
         if (result.error){
             throw new BadRequestError(result.error.message)
         }
-        
+
         return result.value
     }
 }

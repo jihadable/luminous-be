@@ -13,7 +13,7 @@ export default class CartProductService {
 
     async addCartProduct(cartId: string, productId: string){
         const cartProduct = await this.db.cartProduct.create({
-            data: { cart_id: cartId, product_id: productId },
+            data: { cart_id: cartId, product_id: productId, quantity: 1 },
             include: {
                 product: {
                     include: {
@@ -56,6 +56,29 @@ export default class CartProductService {
         if (!cartProduct){
             throw new NotFoundError("Produk keranjang tidak ditemukan")
         }
+
+        return cartProduct
+    }
+
+    async updateCartProduct(cartId: string, productId: string, { quantity }: { quantity: number }){
+        await this.getCartProduct(cartId, productId)
+
+        const cartProduct = await this.db.cartProduct.update({
+            where: { 
+                cart_id_product_id: {
+                    cart_id: cartId,
+                    product_id: productId
+                } 
+            },
+            data: { quantity },
+            include: {
+                product: {
+                    include: {
+                        category: true
+                    }
+                }
+            }
+        })
 
         return cartProduct
     }

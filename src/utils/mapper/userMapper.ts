@@ -6,6 +6,8 @@ const userMapper = {
         role: user.role,
         name: user.name,
         email: user.email,
+        phone: user.phone,
+        address: user.address,
         cart: {
             id: user.cart?.id
         }

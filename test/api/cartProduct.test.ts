@@ -73,6 +73,8 @@ describe("Cart Product API", () => {
                 product_id
             })
 
+        expect(response.status).toBe(201)
+
         expect(response.body).toHaveProperty("status")
         expect(response.body).toHaveProperty("data")
 
@@ -80,7 +82,10 @@ describe("Cart Product API", () => {
 
         expect(response.body.data.cart_product).toHaveProperty("id")
         expect(response.body.data.cart_product).toHaveProperty("cart_id")
+        expect(response.body.data.cart_product).toHaveProperty("quantity")
         expect(response.body.data.cart_product).toHaveProperty("product")
+
+        expect(response.body.data.cart_product.quantity).toBe(1)
 
         expect(response.body.data.cart_product.product).toHaveProperty("id")
         expect(response.body.data.cart_product.product).toHaveProperty("name")
@@ -128,7 +133,10 @@ describe("Cart Product API", () => {
 
         expect(response.body.data.cart_products[0]).toHaveProperty("id")
         expect(response.body.data.cart_products[0]).toHaveProperty("cart_id")
+        expect(response.body.data.cart_products[0]).toHaveProperty("quantity")
         expect(response.body.data.cart_products[0]).toHaveProperty("product")
+
+        expect(response.body.data.cart_products[0].quantity).toBe(1)
 
         expect(response.body.data.cart_products[0].product).toHaveProperty("id")
         expect(response.body.data.cart_products[0].product).toHaveProperty("name")
@@ -158,13 +166,49 @@ describe("Cart Product API", () => {
         expect(response.body.status).toBe("fail")
     })
 
-    test("Delete cart product", async() => {
-        const response = await request(app).delete(`/api/carts/${cart_id}`)
+    test("Update cart product", async() => {
+        const response = await request(app).put(`/api/carts/${cart_id}`)
             .set({
                 "Authorization": `Bearer ${jwt}`
             })
             .send({
-                product_id
+                product_id,
+                quantity: 2
+            })
+        
+        expect(response.status).toBe(200)
+
+        expect(response.body).toHaveProperty("status")
+        expect(response.body).toHaveProperty("data")
+
+        expect(response.body.data).toHaveProperty("cart_product")
+
+        expect(response.body.data.cart_product).toHaveProperty("id")
+        expect(response.body.data.cart_product).toHaveProperty("cart_id")
+        expect(response.body.data.cart_product).toHaveProperty("quantity")
+        expect(response.body.data.cart_product).toHaveProperty("product")
+
+        expect(response.body.data.cart_product.quantity).toBe(2)
+
+        expect(response.body.data.cart_product.product).toHaveProperty("id")
+        expect(response.body.data.cart_product.product).toHaveProperty("name")
+        expect(response.body.data.cart_product.product).toHaveProperty("price")
+        expect(response.body.data.cart_product.product).toHaveProperty("stock")
+        expect(response.body.data.cart_product.product).toHaveProperty("texture")
+        expect(response.body.data.cart_product.product).toHaveProperty("weight")
+        expect(response.body.data.cart_product.product).toHaveProperty("size")
+        expect(response.body.data.cart_product.product).toHaveProperty("description")
+        expect(response.body.data.cart_product.product).toHaveProperty("category")
+        expect(response.body.data.cart_product.product).toHaveProperty("image_url")
+
+        expect(response.body.data.cart_product.product.category).toHaveProperty("id")
+        expect(response.body.data.cart_product.product.category).toHaveProperty("name")
+    })
+
+    test("Delete cart product", async() => {
+        const response = await request(app).delete(`/api/carts/${cart_id}/products/${product_id}`)
+            .set({
+                "Authorization": `Bearer ${jwt}`
             })
 
         expect(response.status).toBe(200)

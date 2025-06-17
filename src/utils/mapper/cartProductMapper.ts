@@ -5,6 +5,7 @@ const cartProductMapper = {
     response: (cartProduct: CartProduct & { product: Product & { category: Category } }) => ({
         id: cartProduct.id,
         cart_id: cartProduct.cart_id,
+        quantity: cartProduct.quantity,
         product: productMapper.response(cartProduct.product)
     })
 } 

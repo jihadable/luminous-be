@@ -36,6 +36,7 @@ async function seed(){
     })
 
     const storageService = new StorageService()
+    await storageService.emptyStorage()
     for (const product of getProducts()) {
         const category = categories.find(c => c.name === product.category_id)
         if (!category) {
@@ -54,7 +55,7 @@ async function seed(){
         const uploadedImageName = await storageService.addImage(fileMock)
 
         await db.product.create({
-            data: {...product, image_url: uploadedImageName, category_id: category.id, stock: 100}
+            data: {...product, image_url: uploadedImageName || "", category_id: category.id, stock: 100}
         })
     }
 }

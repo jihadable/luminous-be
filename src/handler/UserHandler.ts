@@ -22,8 +22,8 @@ export default class UserHandler {
         try {
             const validatedReqBody = this.validator.validateRegisterPayload(req.body)
 
-            const { name, email, password } = validatedReqBody
-            const user = await this.service.addUser({ name, email, password })
+            const { name, email, password, phone, address } = validatedReqBody
+            const user = await this.service.addUser({ name, email, password, phone, address })
             const token = generateJWT(user.id, user.role)
 
             res.status(201).json({
@@ -54,8 +54,8 @@ export default class UserHandler {
             const validatedReqBody = this.validator.validateUpdateUserPayload(req.body)
 
             const { user_id } = res.locals
-            const { name } = validatedReqBody
-            const user = await this.service.updateUser(user_id, { name })
+            const { name, phone, address } = validatedReqBody
+            const user = await this.service.updateUser(user_id, { name, phone, address })
 
             res.status(200).json({
                 status: "success",
