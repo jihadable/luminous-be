@@ -1,6 +1,6 @@
 # Luminous - Backend
 
-Luminous adalah platform e-commerce yang mengkhususkan diri dalam penjualan barang-barang rumah tangga seperti kursi, meja, microwave, dan masih banyak lagi.
+Luminous is an e-commerce platform that specializes in selling household items such as chairs, tables, microwaves, and much more. The website provides search functionality and product details, along with shopping cart feature.
 
 👉 [Live Demo](https://luminous-2110.netlify.app/)
 <br/>
@@ -14,5 +14,7 @@ Luminous adalah platform e-commerce yang mengkhususkan diri dalam penjualan bara
 » ExpressJS
 <br/>
 » PostgreSQL
+<br/>
+» PrismaORM
 
 <img src="https://umarjihad.netlify.app/pic/luminous.png" />
