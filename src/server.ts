@@ -4,7 +4,7 @@ import express from "express";
 import DB from "./database/db.js";
 import apiRouter from "./routes/apiRoute.js";
 dotenv.config({
-    path: ".env.local"
+    path: ".env"
 })
 
 const app = express()
