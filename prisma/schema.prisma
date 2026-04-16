@@ -27,6 +27,7 @@ model User {
   password String
   phone String?
   address String?
+  is_email_verified Boolean @default(false)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -99,6 +100,7 @@ model EmailVerification {
   id String @id @default(uuid())
   user_id String
   token String
+  expire_at DateTime
 
   user User @relation(fields: [user_id], references: [id])
 

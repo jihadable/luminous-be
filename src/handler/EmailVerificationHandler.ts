@@ -16,7 +16,12 @@ class EmailVerificationHandler {
 
     async sendEmailVerification(req: Request, res: Response, next: NextFunction){
         try {
+            const { user_id } = res.locals
+            await this.service.sendEmailVerification(user_id)
 
+            res.status(200).json({
+                status: "success"
+            })
         } catch(error){
             next(error)
         }
@@ -24,7 +29,14 @@ class EmailVerificationHandler {
 
     async verifyEmail(req: Request, res: Response, next: NextFunction){
         try {
-            
+            const validatedReqBody = this.validator.validateVerifyEmail(req.body)
+
+            const { token } = validatedReqBody
+            await this.service.verifyEmail(token)
+
+            res.status(200).json({
+                status: "success"
+            })
         } catch(error){
             next(error)
         }

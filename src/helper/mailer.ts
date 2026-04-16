@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-const sendEmailVerification = async (target: string, emailVerificationLink: string) => {
+const sendEmailVerification = async(target: string, emailVerificationLink: string) => {
     const html = fs
         .readFileSync(
             new URL("../view/emailVerification.html", import.meta.url),

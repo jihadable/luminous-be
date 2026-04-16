@@ -1,6 +1,7 @@
+import { Role } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
-import generateJWT from "../helper/generateJWT.js";
 import userMapper from "../helper/mapper/userMapper.js";
+import { getJWT } from "../helper/tokenizer.js";
 import UserService from "../service/UserService.js";
 import { UserValidator } from "../validator/userValidator.js";
 
@@ -23,8 +24,8 @@ class UserHandler {
             const validatedReqBody = this.validator.validateRegisterPayload(req.body)
 
             const { name, email, password, phone, address } = validatedReqBody
-            const user = await this.service.addUser({ name, email, password, phone, address })
-            const token = generateJWT(user.id, user.role)
+            const user = await this.service.addUser({ name, email, password, role: Role.customer, phone, address })
+            const token = getJWT(user.id, user.role)
 
             res.status(201).json({
                 status: "success",
@@ -72,7 +73,7 @@ class UserHandler {
             
             const { email, password } = validatedReqBody
             const user = await this.service.verifyUser(email, password)
-            const token = generateJWT(user.id, user.role)
+            const token = getJWT(user.id, user.role)
 
             res.status(200).json({
                 status: "success",

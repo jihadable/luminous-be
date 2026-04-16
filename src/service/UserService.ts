@@ -2,29 +2,29 @@ import { PrismaClient, Role } from "@prisma/client";
 import { compareSync, hash } from "bcrypt";
 import BadRequestError from "../errors/BadRequestError.js";
 import NotFoundError from "../errors/NotFoundError.js";
-import CartService from "./CartService.js";
 
 class UserService {
     private db: PrismaClient
-    private cartService: CartService
 
-    constructor(db: PrismaClient, cartService: CartService){
+    constructor(db: PrismaClient){
         this.db = db
-        this.cartService = cartService
     }
 
-    async addUser({ name, email, password, phone, address }: { name: string, email: string, password: string, phone: string, address: string }){
-        const role = Role.customer
-        const hashedPassword = await hash(password, 10)
-        const user = await this.db.user.create({
-            data: { name, role, email, password: hashedPassword, phone, address },
-            include: {
-                cart: true
-            }
-        })
-        const cart = await this.cartService.addCart(user.id)
+    async addUser({ name, email, password, role, phone, address }: { name: string, email: string, password: string, role: Role, phone: string, address: string }){
+        return await this.db.$transaction(async(tx) => {
+            const hashedPassword = await hash(password, 10)
+            const user = await tx.user.create({
+                data: { name, role, email, password: hashedPassword, phone, address }
+            })
 
-        return {...user, cart }
+            const cart = await tx.cart.create({
+                data: {
+                    user_id: user.id
+                }
+            })
+
+            return {...user, cart}
+        })
     }
 
     async getUserById(id: string){
