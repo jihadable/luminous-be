@@ -1,5 +1,5 @@
-import BadRequestError from "../errors/BadRequestError"
-import { PostCartProductRequest, UpdateCartProductRequest } from "../model/request/cartProductRequest"
+import BadRequestError from "../errors/BadRequestError.js"
+import { PostCartProductRequest, UpdateCartProductRequest } from "../model/request/cartProductRequest.js"
 
 export type CartProductValidator = {
     validatePostCartProductPayload: (payload: any) => any

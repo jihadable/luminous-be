@@ -1,4 +1,3 @@
-import path from "path"
 import request from "supertest"
 import app from "./testApp"
 
@@ -47,7 +46,7 @@ describe("Product API", () => {
     })
 
     test("Create product with valid payload", async() => {
-        const imagePath = path.join(__dirname, "../../prisma/seed/data/images/basic-microwave.jpg")
+        const imagePath = new URL("../../src/database/seed/data/images/basic-microwave.jpg", import.meta.url).pathname
         
         const response = await request(app).post("/api/products")
             .set({
@@ -191,7 +190,7 @@ describe("Product API", () => {
     })
 
     test("Update product", async() => {
-        const imagePath = path.join(__dirname, "../../prisma/seed/data/images/bean-bag.jpg")
+        const imagePath = new URL("../../src/database/seed/data/images/bean-bag.jpg", import.meta.url).pathname
 
         const response = await request(app).put(`/api/products/${product_id}`)
             .set({

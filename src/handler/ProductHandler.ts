@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import BadRequestError from "../errors/BadRequestError";
-import ProductService from "../service/ProductService";
-import productMapper from "../utils/mapper/productMapper";
-import { ProductValidator } from "../validator/productValidator";
+import BadRequestError from "../errors/BadRequestError.js";
+import ProductService from "../service/ProductService.js";
+import productMapper from "../utils/mapper/productMapper.js";
+import { ProductValidator } from "../validator/productValidator.js";
 
-export default class ProductHandler {
+class ProductHandler {
     private service: ProductService
     private validator: ProductValidator
 
@@ -104,3 +104,5 @@ export default class ProductHandler {
         }
     }
 }
+
+export default ProductHandler

@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import CartProductService from "../service/CartProductService";
-import cartProductMapper from "../utils/mapper/cartProductMapper";
-import { CartProductValidator } from "../validator/cartProductValidator";
+import CartProductService from "../service/CartProductService.js";
+import cartProductMapper from "../utils/mapper/cartProductMapper.js";
+import { CartProductValidator } from "../validator/cartProductValidator.js";
 
-export default class CartProductHandler {
+class CartProductHandler {
     private service: CartProductService
     private validator: CartProductValidator
 
@@ -78,3 +78,5 @@ export default class CartProductHandler {
         }
     }
 }
+
+export default CartProductHandler

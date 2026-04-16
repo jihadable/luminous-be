@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export const RegisterRequest = Joi.object({
+const RegisterRequest = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
@@ -8,13 +8,15 @@ export const RegisterRequest = Joi.object({
     address: Joi.string().required()
 })
 
-export const UpdateUserRequest = Joi.object({
+const UpdateUserRequest = Joi.object({
     name: Joi.string().required(),
     phone: Joi.string().required(),
     address: Joi.string().required()
 })
 
-export const LoginRequest = Joi.object({
+const LoginRequest = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required()
 })
+
+export { LoginRequest, RegisterRequest, UpdateUserRequest };

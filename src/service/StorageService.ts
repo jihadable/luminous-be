@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import path from "path";
 import { v4 as uuid } from "uuid";
 
-export default class StorageService {
+class StorageService {
     private baseURL: string = process.env.SUPABASE_API_ENDPOINT || ""
     private apiKey: string = process.env.SUPABASE_API_KEY || ""
     private bucket: string = process.env.SUPABASE_BUCKET || ""
@@ -43,3 +43,5 @@ export default class StorageService {
         }
     }
 }
+
+export default StorageService

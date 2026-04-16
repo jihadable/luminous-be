@@ -1,10 +1,10 @@
+import { PrismaClient, Role } from "@prisma/client";
 import { compareSync, hash } from "bcrypt";
-import { PrismaClient, Role } from "../../generated/prisma";
-import BadRequestError from "../errors/BadRequestError";
-import NotFoundError from "../errors/NotFoundError";
-import CartService from "./CartService";
+import BadRequestError from "../errors/BadRequestError.js";
+import NotFoundError from "../errors/NotFoundError.js";
+import CartService from "./CartService.js";
 
-export default class UserService {
+class UserService {
     private db: PrismaClient
     private cartService: CartService
 
@@ -74,3 +74,4 @@ export default class UserService {
     }
 }
 
+export default UserService

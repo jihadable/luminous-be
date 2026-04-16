@@ -1,9 +1,10 @@
+import { Category } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
-import CategoryService from "../service/CategoryService";
-import categoryMapper from "../utils/mapper/categoryMapper";
-import { CategoryValidator } from "../validator/categoryValidator";
+import CategoryService from "../service/CategoryService.js";
+import categoryMapper from "../utils/mapper/categoryMapper.js";
+import { CategoryValidator } from "../validator/categoryValidator.js";
 
-export default class CategoryHandler {
+class CategoryHandler {
     private service: CategoryService
     private validator: CategoryValidator
 
@@ -39,7 +40,7 @@ export default class CategoryHandler {
 
             res.status(200).json({
                 status: "success",
-                data: { categories: categories.map(category => categoryMapper.response(category)) }
+                data: { categories: categories.map((category: Category) => categoryMapper.response(category)) }
             })
         } catch(error){
             next(error)
@@ -73,3 +74,5 @@ export default class CategoryHandler {
         }
     }
 }
+
+export default CategoryHandler

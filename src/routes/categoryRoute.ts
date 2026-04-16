@@ -1,12 +1,12 @@
+import { PrismaClient, Role } from "@prisma/client";
 import { Router } from "express";
-import { PrismaClient, Role } from "../../generated/prisma";
-import CategoryHandler from "../handler/CategoryHandler";
-import authMiddleware from "../middleware/authMiddleware";
-import authorizeRoleMiddleware from "../middleware/authorizeRoleMiddleware";
-import CategoryService from "../service/CategoryService";
-import categoryValidator from "../validator/categoryValidator";
+import CategoryHandler from "../handler/CategoryHandler.js";
+import authMiddleware from "../middleware/authMiddleware.js";
+import authorizeRoleMiddleware from "../middleware/authorizeRoleMiddleware.js";
+import CategoryService from "../service/CategoryService.js";
+import categoryValidator from "../validator/categoryValidator.js";
 
-export default function categoryRouter(db: PrismaClient){
+const categoryRouter = (db: PrismaClient) => {
     const service = new CategoryService(db)
     const handler = new CategoryHandler(service, categoryValidator)
     const router = Router()
@@ -18,3 +18,5 @@ export default function categoryRouter(db: PrismaClient){
 
     return router
 }
+
+export default categoryRouter

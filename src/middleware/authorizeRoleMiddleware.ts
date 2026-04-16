@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import ForbiddenError from "../errors/ForbiddenError";
+import ForbiddenError from "../errors/ForbiddenError.js";
 
-export default function authorizeRoleMiddleware(...allowedRoles: string[]){
+const authorizeRoleMiddleware = (...allowedRoles: string[]) => {
     return function(_: Request, res: Response, next: NextFunction){
         try {
             const { role } = res.locals
@@ -16,3 +16,5 @@ export default function authorizeRoleMiddleware(...allowedRoles: string[]){
         }
     }
 }
+
+export default authorizeRoleMiddleware

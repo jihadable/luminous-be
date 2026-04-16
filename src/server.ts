@@ -1,9 +1,11 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import DB from "./database/db";
-import apiRouter from "./routes/apiRoute";
-dotenv.config()
+import DB from "./database/db.js";
+import apiRouter from "./routes/apiRoute.js";
+dotenv.config({
+    path: ".env.local"
+})
 
 const app = express()
 

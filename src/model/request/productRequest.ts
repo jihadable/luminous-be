@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export const PostProductRequest = Joi.object({
+const PostProductRequest = Joi.object({
     name: Joi.string().required(),
     price: Joi.number().required(),
     stock: Joi.number().required(),
@@ -11,7 +11,7 @@ export const PostProductRequest = Joi.object({
     category_id: Joi.string().required()
 })
 
-export const UpdateProductRequest = Joi.object({
+const UpdateProductRequest = Joi.object({
     name: Joi.string().required(),
     price: Joi.number().required(),
     stock: Joi.number().required(),
@@ -21,3 +21,5 @@ export const UpdateProductRequest = Joi.object({
     texture: Joi.string().required(),
     category_id: Joi.string().required()
 })
+
+export { PostProductRequest, UpdateProductRequest };

@@ -1,5 +1,5 @@
-import BadRequestError from "../errors/BadRequestError"
-import { PostCategoryRequest } from "../model/request/categoryRequest"
+import BadRequestError from "../errors/BadRequestError.js"
+import { PostCategoryRequest } from "../model/request/categoryRequest.js"
 
 export type CategoryValidator = {
     validatePostCategoryPayload: (payload: any) => any

@@ -1,14 +1,14 @@
+import { PrismaClient, Role } from "@prisma/client";
 import { Router } from "express";
-import { PrismaClient, Role } from "../../generated/prisma";
-import ProductHandler from "../handler/ProductHandler";
-import authMiddleware from "../middleware/authMiddleware";
-import authorizeRoleMiddleware from "../middleware/authorizeRoleMiddleware";
-import uploadImage from "../middleware/storageMiddleware";
-import ProductService from "../service/ProductService";
-import StorageService from "../service/StorageService";
-import productValidator from "../validator/productValidator";
+import ProductHandler from "../handler/ProductHandler.js";
+import authMiddleware from "../middleware/authMiddleware.js";
+import authorizeRoleMiddleware from "../middleware/authorizeRoleMiddleware.js";
+import uploadImage from "../middleware/storageMiddleware.js";
+import ProductService from "../service/ProductService.js";
+import StorageService from "../service/StorageService.js";
+import productValidator from "../validator/productValidator.js";
 
-export default function productRouter(db: PrismaClient){
+const productRouter = (db: PrismaClient) => {
     const storageService = new StorageService()
     const service = new ProductService(db, storageService)
     const handler = new ProductHandler(service, productValidator)
@@ -22,3 +22,5 @@ export default function productRouter(db: PrismaClient){
 
     return router
 }
+
+export default productRouter

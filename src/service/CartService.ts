@@ -1,7 +1,7 @@
-import { PrismaClient } from "../../generated/prisma";
-import NotFoundError from "../errors/NotFoundError";
+import { PrismaClient } from "@prisma/client";
+import NotFoundError from "../errors/NotFoundError.js";
 
-export default class CartService {
+class CartService {
     private db: PrismaClient
 
     constructor(db: PrismaClient){
@@ -28,3 +28,5 @@ export default class CartService {
         return cart
     }
 }
+
+export default CartService

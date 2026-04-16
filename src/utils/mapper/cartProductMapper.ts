@@ -1,5 +1,5 @@
-import { CartProduct, Category, Product } from "../../../generated/prisma";
-import productMapper from "./productMapper";
+import { CartProduct, Category, Product } from "@prisma/client";
+import productMapper from "./productMapper.js";
 
 const cartProductMapper = {
     response: (cartProduct: CartProduct & { product: Product & { category: Category } }) => ({

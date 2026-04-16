@@ -1,4 +1,4 @@
-import { Cart, User } from "../../../generated/prisma"
+import { Cart, User } from "@prisma/client"
 
 const userMapper = {
     response: (user: User & { cart: Cart | null }) => ({

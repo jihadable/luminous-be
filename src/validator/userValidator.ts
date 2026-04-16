@@ -1,5 +1,5 @@
-import BadRequestError from "../errors/BadRequestError"
-import { LoginRequest, RegisterRequest, UpdateUserRequest } from "../model/request/userRequest"
+import BadRequestError from "../errors/BadRequestError.js"
+import { LoginRequest, RegisterRequest, UpdateUserRequest } from "../model/request/userRequest.js"
 
 export type UserValidator = {
     validateRegisterPayload: (payload: any) => any

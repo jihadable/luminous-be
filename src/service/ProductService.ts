@@ -1,8 +1,8 @@
-import { PrismaClient } from "../../generated/prisma";
-import NotFoundError from "../errors/NotFoundError";
-import StorageService from "./StorageService";
+import { PrismaClient } from "@prisma/client";
+import NotFoundError from "../errors/NotFoundError.js";
+import StorageService from "./StorageService.js";
 
-export default class ProductService {
+class ProductService {
     private db: PrismaClient
     private storageService: StorageService
 
@@ -82,3 +82,5 @@ export default class ProductService {
         })
     }
 }
+
+export default ProductService

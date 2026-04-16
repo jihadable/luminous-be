@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import UserService from "../service/UserService";
-import generateJWT from "../utils/generateJWT";
-import userMapper from "../utils/mapper/userMapper";
-import { UserValidator } from "../validator/userValidator";
+import UserService from "../service/UserService.js";
+import generateJWT from "../utils/generateJWT.js";
+import userMapper from "../utils/mapper/userMapper.js";
+import { UserValidator } from "../validator/userValidator.js";
 
-export default class UserHandler {
+class UserHandler {
     private service: UserService
     private validator: UserValidator
 
@@ -83,3 +83,5 @@ export default class UserHandler {
         }
     }
 }
+
+export default UserHandler
