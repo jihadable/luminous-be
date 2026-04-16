@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import cartProductMapper from "../helper/mapper/cartProductMapper.js";
 import CartProductService from "../service/CartProductService.js";
-import cartProductMapper from "../utils/mapper/cartProductMapper.js";
 import { CartProductValidator } from "../validator/cartProductValidator.js";
 
 class CartProductHandler {

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
+import generateJWT from "../helper/generateJWT.js";
+import userMapper from "../helper/mapper/userMapper.js";
 import UserService from "../service/UserService.js";
-import generateJWT from "../utils/generateJWT.js";
-import userMapper from "../utils/mapper/userMapper.js";
 import { UserValidator } from "../validator/userValidator.js";
 
 class UserHandler {

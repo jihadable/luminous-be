@@ -1,7 +1,7 @@
 import { Category } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
+import categoryMapper from "../helper/mapper/categoryMapper.js";
 import CategoryService from "../service/CategoryService.js";
-import categoryMapper from "../utils/mapper/categoryMapper.js";
 import { CategoryValidator } from "../validator/categoryValidator.js";
 
 class CategoryHandler {

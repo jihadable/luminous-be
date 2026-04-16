@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import BadRequestError from "../errors/BadRequestError.js";
+import productMapper from "../helper/mapper/productMapper.js";
 import ProductService from "../service/ProductService.js";
-import productMapper from "../utils/mapper/productMapper.js";
 import { ProductValidator } from "../validator/productValidator.js";
 
 class ProductHandler {

@@ -31,6 +31,7 @@ model User {
   updated_at DateTime @updatedAt
 
   cart Cart?
+  email_verifications EmailVerification[]
 
   @@map("users")
 }
@@ -92,4 +93,14 @@ model CartProduct {
   @@unique([cart_id, product_id])
 
   @@map("cart_products")
+}
+
+model EmailVerification {
+  id String @id @default(uuid())
+  user_id String
+  token String
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("email_verifications")
 }
