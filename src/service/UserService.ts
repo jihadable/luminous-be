@@ -36,7 +36,7 @@ class UserService {
         })
 
         if (!user){
-            throw new NotFoundError("Pengguna tidak ditemukan")
+            throw new NotFoundError("User not found")
         }
 
         return user
@@ -63,11 +63,11 @@ class UserService {
         })
 
         if (!user){
-            throw new BadRequestError("Email atau password salah")
+            throw new BadRequestError("Email or password incorrect")
         }
 
         if (!compareSync(password, user.password)){
-            throw new BadRequestError("Email atau password salah")
+            throw new BadRequestError("Email or password incorrect")
         }
 
         return user

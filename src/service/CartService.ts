@@ -22,7 +22,7 @@ class CartService {
         })
 
         if (!cart){
-            throw new NotFoundError("Keranjang tidak ditemukan")
+            throw new NotFoundError("Cart not found")
         }
 
         return cart

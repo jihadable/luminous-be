@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client"
+import redis from "../config/redis.js"
 import NotFoundError from "../errors/NotFoundError.js"
 
 class CategoryService {
@@ -17,7 +18,16 @@ class CategoryService {
     }
 
     async getCategories(){
+        const redisKey = `categories`
+        const categoriesInRedis = await redis.get(redisKey)
+
+        if (categoriesInRedis){
+            return JSON.parse(categoriesInRedis)
+        }
+        
         const categories = await this.db.category.findMany()
+
+        await redis.setEx(redisKey, 60 * 60, JSON.stringify(categories))
 
         return categories
     }
@@ -28,7 +38,7 @@ class CategoryService {
         })
 
         if (!category){
-            throw new NotFoundError("Kategori tidak ditemukan")
+            throw new NotFoundError("Category not found")
         }
 
         return category
@@ -40,6 +50,9 @@ class CategoryService {
         await this.db.category.delete({
             where: { id }
         })
+
+        const redisKey = `categories`
+        await redis.del(redisKey)
     }
 }
 

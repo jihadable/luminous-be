@@ -54,7 +54,7 @@ class CartProductService {
         })
 
         if (!cartProduct){
-            throw new NotFoundError("Produk keranjang tidak ditemukan")
+            throw new NotFoundError("Cart product not found")
         }
 
         return cartProduct

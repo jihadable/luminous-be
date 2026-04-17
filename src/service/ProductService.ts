@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import redis from "../config/redis.js";
 import NotFoundError from "../errors/NotFoundError.js";
 import StorageService from "./StorageService.js";
 
@@ -23,6 +24,9 @@ class ProductService {
             }
         })
 
+        const redisKey = `product:${product.id}`
+        await redis.setEx(redisKey, 60 * 60, JSON.stringify(product))
+
         return product
     }
 
@@ -37,6 +41,13 @@ class ProductService {
     }
 
     async getProductById(id: string){
+        const redisKey = `product:${id}`
+        const productInRedis = await redis.get(redisKey)
+
+        if (productInRedis){
+            return JSON.parse(productInRedis)
+        }
+
         const product = await this.db.product.findUnique({
             where: { id },
             include: {
@@ -45,8 +56,10 @@ class ProductService {
         })
         
         if (!product){
-            throw new NotFoundError("Produk tidak ditemukan")
+            throw new NotFoundError("Product not found")
         }
+
+        await redis.setEx(redisKey, 60 * 60, JSON.stringify(product))
 
         return product
     }
@@ -69,6 +82,9 @@ class ProductService {
             }
         })
 
+        const redisKey = `product:${product.id}`
+        await redis.del(redisKey)
+
         return product
     }
 
@@ -80,6 +96,9 @@ class ProductService {
         await this.db.product.delete({
             where: { id }
         })
+
+        const redisKey = `product:${id}`
+        await redis.del(redisKey)
     }
 }
 
