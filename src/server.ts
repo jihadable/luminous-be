@@ -1,10 +1,10 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import DB from "./database/db.js";
+import DB from "./config/db.js";
 import apiRouter from "./routes/apiRoute.js";
 dotenv.config({
-    path: ".env",
+    path: ".env.local",
     override: true
 })
 

@@ -45,11 +45,13 @@ class CategoryService {
     }
 
     async deleteCategoryById(id: string){
-        await this.getCategoryById(id)
-
-        await this.db.category.delete({
+        const result = await this.db.category.deleteMany({
             where: { id }
         })
+
+        if (result.count == 0){
+            throw new NotFoundError("Category not found")
+        }
 
         const redisKey = `categories`
         await redis.del(redisKey)

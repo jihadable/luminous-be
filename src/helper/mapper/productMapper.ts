@@ -4,7 +4,7 @@ const productMapper = {
     response: (product: Product & { category: Category }) => ({
         id: product.id,
         name: product.name,
-        price: product.price.toNumber(),
+        price: Number(product.price),
         stock: product.stock,
         texture: product.texture,
         weight: product.weight,

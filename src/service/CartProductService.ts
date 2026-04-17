@@ -84,16 +84,16 @@ class CartProductService {
     }
 
     async deleteCartProduct(cartId: string, productId: string){
-        await this.getCartProduct(cartId, productId)
-
-        await this.db.cartProduct.delete({
+        const result = await this.db.cartProduct.deleteMany({
             where: { 
-                cart_id_product_id: {
-                    cart_id: cartId,
-                    product_id: productId
-                }
+                cart_id: cartId,
+                product_id: productId
             }
         })
+        
+        if (result.count == 0){
+            throw new NotFoundError("Cart product not found")
+        }
     }
 }
 

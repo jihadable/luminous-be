@@ -27,7 +27,7 @@ class ProductHandler {
             const { file } = req 
     
             if (!file){
-                throw new BadRequestError("Gambar harus diisi")
+                throw new BadRequestError("Image file is required")
             }
     
             const product = await this.service.addProduct({ name, price, stock, description, size, weight, texture, category_id, image: file })
@@ -77,7 +77,7 @@ class ProductHandler {
             const { file } = req 
     
             if (!file){
-                throw new BadRequestError("Gambar harus diisi")
+                throw new BadRequestError("Image file is required")
             }
     
             const product = await this.service.updateProductById(product_id, { name, price, stock, description, size, weight, texture,category_id, image: file })
