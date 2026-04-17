@@ -6,9 +6,9 @@ export type EmailVerificationValidator = {
 }
 
 const emailVerificationValidator: EmailVerificationValidator = {
-    validateVerifyEmail: (payload) => {
+    validateVerifyEmail: (payload: any) => {
         const result = VerifyEmailRequest.validate(payload)
-
+        
         if (result.error){
             throw new BadRequestError(result.error.message)
         }

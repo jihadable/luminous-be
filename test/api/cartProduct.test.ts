@@ -6,7 +6,7 @@ describe("Cart Product API", () => {
 
     test("Login as customer", async() => {
         const response = await request(app).post("/api/users/login").send({
-            email: "umarjihad@gmail.com",
+            email: "umarjihad141004@gmail.com",
             password: process.env.PRIVATE_PASSWORD
         })
 
@@ -28,8 +28,8 @@ describe("Cart Product API", () => {
         expect(response.body.data.user).toHaveProperty("cart")
 
         expect(response.body.data.user.role).toBe("customer")
-        expect(response.body.data.user.name).toBe("umar jihad")
-        expect(response.body.data.user.email).toBe("umarjihad@gmail.com")        
+        expect(response.body.data.user.name).toBe("Umar Jihad")
+        expect(response.body.data.user.email).toBe("umarjihad141004@gmail.com")        
         expect(response.body.data.user.cart).toHaveProperty("id")  
         
         cart_id = response.body.data.user.cart.id

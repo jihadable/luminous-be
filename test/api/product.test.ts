@@ -6,7 +6,7 @@ describe("Product API", () => {
 
     test("Login as admin", async() => {
         const response = await request(app).post("/api/users/login").send({
-            email: "luminousadmin@gmail.com",
+            email: "noreplydevnoreplydev@gmail.com",
             password: process.env.PRIVATE_PASSWORD
         })
 
@@ -25,8 +25,8 @@ describe("Product API", () => {
         expect(response.body.data.user).toHaveProperty("email")
 
         expect(response.body.data.user.role).toBe("admin")
-        expect(response.body.data.user.name).toBe("luminous admin")
-        expect(response.body.data.user.email).toBe("luminousadmin@gmail.com")
+        expect(response.body.data.user.name).toBe("Luminous Admin")
+        expect(response.body.data.user.email).toBe("noreplydevnoreplydev@gmail.com")
     })
 
     test("Get categories", async() => {

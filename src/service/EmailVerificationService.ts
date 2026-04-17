@@ -55,11 +55,11 @@ class EmailVerificationService {
             if (emailVerification.expire_at < new Date()){
                 throw new BadRequestError("Token is invalid or expired")
             }
-
+            
             const user = await tx.user.findUnique({
                 where: { id: emailVerification.user_id }
             })
-
+            
             if (!user){
                 throw new BadRequestError("Token is invalid or expired")
             }

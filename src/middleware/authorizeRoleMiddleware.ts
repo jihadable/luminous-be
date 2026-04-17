@@ -6,7 +6,7 @@ const authorizeRoleMiddleware = (...allowedRoles: string[]) => {
         try {
             const { role } = res.locals
     
-            if (!role || role === !allowedRoles.includes(role)){
+            if (!role || !allowedRoles.includes(role)){
                 throw new ForbiddenError("Peran pengguna tidak diizinkan")
             }
     
