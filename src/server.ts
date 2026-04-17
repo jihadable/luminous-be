@@ -4,12 +4,15 @@ import express from "express";
 import DB from "./database/db.js";
 import apiRouter from "./routes/apiRoute.js";
 dotenv.config({
-    path: ".env"
+    path: ".env.local",
+    override: true
 })
 
 const app = express()
 
 app.use(express.json(), cors())
+
+app.use("/asset", express.static(new URL("./asset", import.meta.url).pathname))
 
 const db = DB()
 app.use("/api", apiRouter(db))

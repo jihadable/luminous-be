@@ -8,6 +8,7 @@ const userMapper = {
         email: user.email,
         phone: user.phone,
         address: user.address,
+        is_email_verified: user.is_email_verified,
         cart: {
             id: user.cart?.id
         }
