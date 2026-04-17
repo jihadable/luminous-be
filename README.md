@@ -16,5 +16,7 @@ Luminous is an e-commerce platform that specializes in selling household items s
 » PostgreSQL
 <br/>
 » PrismaORM
+<br/>
+» Redis
 
 <img src="https://umarjihad.netlify.app/pic/luminous.png" />
