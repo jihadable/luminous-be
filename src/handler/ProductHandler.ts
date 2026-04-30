@@ -41,13 +41,20 @@ class ProductHandler {
         }
     }
 
-    async getProducts(_req: Request, res: Response, next: NextFunction){
+    async getProducts(req: Request, res: Response, next: NextFunction){
         try {
-            const products = await this.service.getProducts()
+            const { sort, order, category, page, limit } = req.query
+            const data = await this.service.getProducts({
+                sort: typeof sort === "string" ? sort : undefined,
+                order: typeof order === "string" ? order : undefined,
+                category: typeof category === "string" ? category : undefined,
+                page: page ? Number(page) : undefined,
+                limit: limit ? Number(limit) : undefined
+            })
 
             res.status(200).json({
                 status: "success",
-                data: { products: products.map(product => productMapper.response(product)) }
+                data
             })
         } catch(error){
             next(error)

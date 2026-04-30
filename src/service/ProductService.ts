@@ -27,17 +27,50 @@ class ProductService {
         const redisKey = `product:${product.id}`
         await redis.setEx(redisKey, 60 * 60, JSON.stringify(product))
 
+        await redis.del("dashboard")
+
         return product
     }
 
-    async getProducts(){
-        const products = await this.db.product.findMany({
-            include: {
-                category: true
-            }
-        })
+    async getProducts({ sort, order, category, page = 1, limit = 20 }: { sort?: string, order?: string, category?: string, page?: number, limit?: number }){
+        const skip = (page - 1) * limit
+        const where = {
+            ...(category && {
+                category: {
+                    name: category
+                }
+            })
+        }
 
-        return products
+        const allowedSortFields = ["name", "price", "stock"]
+        const sortField = allowedSortFields.includes(sort || "") ? sort : undefined
+
+        const sortOrder = order === "asc" || order === "desc" ? order : "asc"
+
+        const [products, totalProducts] = await Promise.all([
+            this.db.product.findMany({
+                include: {
+                    category: true
+                },
+                where,
+                skip,
+                take: limit,
+                orderBy: sortField
+                    ? { [sortField]: sortOrder }
+                    : undefined
+            }),
+            this.db.product.count({ where })
+        ])
+
+        return {
+            products,
+            pagination: {
+                total: totalProducts,
+                page,
+                limit,
+                total_pages: Math.ceil(totalProducts/limit)
+            }
+        }
     }
 
     async getProductById(id: string){
@@ -83,7 +116,7 @@ class ProductService {
         })
 
         const redisKey = `product:${product.id}`
-        await redis.del(redisKey)
+        await redis.del([redisKey, "dashboard"])
 
         return product
     }
@@ -98,7 +131,7 @@ class ProductService {
         })
 
         const redisKey = `product:${id}`
-        await redis.del(redisKey)
+        await redis.del([redisKey, "dashboard"])
     }
 }
 

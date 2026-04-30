@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client"
+import redis from "../config/redis.js"
 
 class DashboardService {
     private db: PrismaClient
@@ -8,9 +9,14 @@ class DashboardService {
     }
 
     async getDashboardData(){
-        const totalUsers = await this.db.user.count({
-            where: { role: "customer" }
-        })
+        const redisKey = `dashboard`
+        const dashboardInRedis = await redis.get(redisKey)
+
+        if (dashboardInRedis){
+            return JSON.parse(dashboardInRedis)
+        }
+
+        const totalUsers = await this.db.user.count()
         const totalProducts = await this.db.product.count()
         const totalCategories = await this.db.category.count()
 
@@ -55,7 +61,7 @@ class DashboardService {
             }
         })
 
-        return {
+        const dashboardData = {
             total_users: totalUsers,
             total_products: totalProducts,
             total_categories: totalCategories,
@@ -63,6 +69,10 @@ class DashboardService {
             most_added_to_cart_products: mostAddedToCartProducts,
             low_stock_products: lowStockProducts,
         }
+
+        await redis.setEx(redisKey, 60 * 60, JSON.stringify(dashboardData))
+
+        return dashboardData
     }
 }
 

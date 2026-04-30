@@ -54,7 +54,7 @@ class CategoryService {
         }
 
         const redisKey = `categories`
-        await redis.del(redisKey)
+        await redis.del([redisKey, "dashboard"])
     }
 }
 

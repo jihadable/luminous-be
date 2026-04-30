@@ -13,10 +13,33 @@ class UserHandler {
         this.service = service
         this.validator = validator
 
+        this.getUsers = this.getUsers.bind(this)
         this.postUser = this.postUser.bind(this)
         this.getUserById = this.getUserById.bind(this)
         this.updateUser = this.updateUser.bind(this)
         this.verifyUser = this.verifyUser.bind(this)
+    }
+
+    async getUsers(req: Request, res: Response, next: NextFunction){
+        try {
+            const { role, is_email_verified, page, limit } = req.query
+
+            const data = await this.service.getUsers({ 
+                role: role as Role | undefined,
+                is_email_verified: is_email_verified !== undefined 
+                    ? is_email_verified === "true"
+                    : undefined,
+                page: page ? Number(page) : undefined,
+                limit: limit ? Number(limit) : undefined
+            })
+
+            res.status(200).json({
+                status: "success",
+                data
+            })
+        } catch(error){
+            next(error)
+        }
     }
 
     async postUser(req: Request, res: Response, next: NextFunction){
