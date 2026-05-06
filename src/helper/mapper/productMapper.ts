@@ -1,7 +1,7 @@
 import { Category, Product } from "@prisma/client";
 
 const productMapper = {
-    response: (product: Product & { category: Category }) => ({
+    response: (product: Product & { category: Category | null }) => ({
         id: product.id,
         name: product.name,
         price: Number(product.price),
@@ -14,8 +14,8 @@ const productMapper = {
         created_at: product.created_at,
         updated_at: product.updated_at,
         category: {
-            id: product.category.id,
-            name: product.category.name
+            id: product.category?.id,
+            name: product.category?.name
         }
     })
 }

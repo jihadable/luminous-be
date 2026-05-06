@@ -58,11 +58,11 @@ model Product {
   size String
   description String
   image_url String
-  category_id String 
+  category_id String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  category Category @relation(fields: [category_id], references: [id])
+  category Category? @relation(fields: [category_id], references: [id], onDelete: SetNull)
   cart_products CartProduct[]
 
   @@map("products")
