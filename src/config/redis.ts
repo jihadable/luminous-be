@@ -8,4 +8,6 @@ redis.on("error", (err) => console.log("Redis error:", err))
 
 redis.connect()
 
-export default redis
+const getRedis = () => redis
+
+export default getRedis

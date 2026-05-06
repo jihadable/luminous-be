@@ -1,16 +1,18 @@
 import { PrismaClient } from "@prisma/client"
-import redis from "../config/redis.js"
+import { default as getRedis } from "../config/redis.js"
 
 class DashboardService {
     private db: PrismaClient
+    private redis: ReturnType<typeof getRedis>
 
-    constructor(db: PrismaClient){
+    constructor(db: PrismaClient, redis: ReturnType<typeof getRedis>){
         this.db = db
+        this.redis = redis
     }
 
     async getDashboardData(){
         const redisKey = `dashboard`
-        const dashboardInRedis = await redis.get(redisKey)
+        const dashboardInRedis = await this.redis.get(redisKey)
 
         if (dashboardInRedis){
             return JSON.parse(dashboardInRedis)
@@ -70,7 +72,7 @@ class DashboardService {
             low_stock_products: lowStockProducts,
         }
 
-        await redis.setEx(redisKey, 60 * 60, JSON.stringify(dashboardData))
+        await this.redis.setEx(redisKey, 60 * 60, JSON.stringify(dashboardData))
 
         return dashboardData
     }

@@ -1,14 +1,16 @@
 import { PrismaClient } from "@prisma/client";
-import redis from "../config/redis.js";
+import getRedis from "../config/redis.js";
 import NotFoundError from "../errors/NotFoundError.js";
 import StorageService from "./StorageService.js";
 
 class ProductService {
     private db: PrismaClient
+    private redis: ReturnType<typeof getRedis>
     private storageService: StorageService
 
-    constructor(db: PrismaClient, storageService: StorageService){
+    constructor(db: PrismaClient, redis: ReturnType<typeof getRedis>, storageService: StorageService){
         this.db = db
+        this.redis = redis
         this.storageService = storageService
     }
 
@@ -25,9 +27,9 @@ class ProductService {
         })
 
         const redisKey = `product:${product.id}`
-        await redis.setEx(redisKey, 60 * 60, JSON.stringify(product))
+        await this.redis.setEx(redisKey, 60 * 60, JSON.stringify(product))
 
-        await redis.del("dashboard")
+        await this.redis.del("dashboard")
 
         return product
     }
@@ -75,7 +77,7 @@ class ProductService {
 
     async getProductById(id: string){
         const redisKey = `product:${id}`
-        const productInRedis = await redis.get(redisKey)
+        const productInRedis = await this.redis.get(redisKey)
 
         if (productInRedis){
             return JSON.parse(productInRedis)
@@ -92,7 +94,7 @@ class ProductService {
             throw new NotFoundError("Product not found")
         }
 
-        await redis.setEx(redisKey, 60 * 60, JSON.stringify(product))
+        await this.redis.setEx(redisKey, 60 * 60, JSON.stringify(product))
 
         return product
     }
@@ -116,7 +118,7 @@ class ProductService {
         })
 
         const redisKey = `product:${product.id}`
-        await redis.del([redisKey, "dashboard"])
+        await this.redis.del([redisKey, "dashboard"])
 
         return product
     }
@@ -131,7 +133,7 @@ class ProductService {
         })
 
         const redisKey = `product:${id}`
-        await redis.del([redisKey, "dashboard"])
+        await this.redis.del([redisKey, "dashboard"])
     }
 }
 

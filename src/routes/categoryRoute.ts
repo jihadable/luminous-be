@@ -1,13 +1,14 @@
 import { PrismaClient, Role } from "@prisma/client";
 import { Router } from "express";
+import getRedis from "../config/redis.js";
 import CategoryHandler from "../handler/CategoryHandler.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import authorizeRoleMiddleware from "../middleware/authorizeRoleMiddleware.js";
 import CategoryService from "../service/CategoryService.js";
 import categoryValidator from "../validator/categoryValidator.js";
 
-const categoryRouter = (db: PrismaClient) => {
-    const service = new CategoryService(db)
+const categoryRouter = (db: PrismaClient, redis: ReturnType<typeof getRedis>) => {
+    const service = new CategoryService(db, redis)
     const handler = new CategoryHandler(service, categoryValidator)
     const router = Router()
 

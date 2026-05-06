@@ -1,12 +1,14 @@
 import { PrismaClient } from "@prisma/client"
-import redis from "../config/redis.js"
+import { default as getRedis } from "../config/redis.js"
 import NotFoundError from "../errors/NotFoundError.js"
 
 class CategoryService {
     private db: PrismaClient
+    private redis: ReturnType<typeof getRedis>
 
-    constructor(db: PrismaClient){
+    constructor(db: PrismaClient, redis: ReturnType<typeof getRedis>){
         this.db = db
+        this.redis = redis
     }
 
     async addCategory({ name }: { name: string }){
@@ -14,12 +16,14 @@ class CategoryService {
             data: { name }
         })
 
+        await this.redis.del("categories")
+
         return category
     }
 
     async getCategories(){
         const redisKey = `categories`
-        const categoriesInRedis = await redis.get(redisKey)
+        const categoriesInRedis = await this.redis.get(redisKey)
 
         if (categoriesInRedis){
             return JSON.parse(categoriesInRedis)
@@ -27,7 +31,7 @@ class CategoryService {
         
         const categories = await this.db.category.findMany()
 
-        await redis.setEx(redisKey, 60 * 60, JSON.stringify(categories))
+        await this.redis.setEx(redisKey, 60 * 60, JSON.stringify(categories))
 
         return categories
     }
@@ -54,7 +58,7 @@ class CategoryService {
         }
 
         const redisKey = `categories`
-        await redis.del([redisKey, "dashboard"])
+        await this.redis.del([redisKey, "dashboard"])
     }
 }
 

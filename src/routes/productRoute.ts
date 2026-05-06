@@ -1,5 +1,6 @@
 import { PrismaClient, Role } from "@prisma/client";
 import { Router } from "express";
+import getRedis from "../config/redis.js";
 import ProductHandler from "../handler/ProductHandler.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import authorizeRoleMiddleware from "../middleware/authorizeRoleMiddleware.js";
@@ -8,9 +9,9 @@ import ProductService from "../service/ProductService.js";
 import StorageService from "../service/StorageService.js";
 import productValidator from "../validator/productValidator.js";
 
-const productRouter = (db: PrismaClient) => {
+const productRouter = (db: PrismaClient, redis: ReturnType<typeof getRedis>) => {
     const storageService = new StorageService()
-    const service = new ProductService(db, storageService)
+    const service = new ProductService(db, redis, storageService)
     const handler = new ProductHandler(service, productValidator)
     const router = Router()
 
