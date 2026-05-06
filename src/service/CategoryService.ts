@@ -16,7 +16,7 @@ class CategoryService {
             data: { name }
         })
 
-        await this.redis.del("categories")
+        await this.redis.del(["categories", "dashboard"])
 
         return category
     }
@@ -57,8 +57,7 @@ class CategoryService {
             throw new NotFoundError("Category not found")
         }
 
-        const redisKey = `categories`
-        await this.redis.del([redisKey, "dashboard"])
+        await this.redis.del(["categories", "dashboard"])
     }
 }
 
