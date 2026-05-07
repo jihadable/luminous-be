@@ -8,7 +8,7 @@ const PostProductRequest = Joi.object({
     size: Joi.string().required(),
     weight: Joi.string().required(),
     texture: Joi.string().required(),
-    category_id: Joi.string().required()
+    category_id: Joi.string()
 })
 
 const UpdateProductRequest = Joi.object({

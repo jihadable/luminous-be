@@ -25,13 +25,13 @@ class ProductHandler {
 
             const { name, price, stock, description, size, weight, texture, category_id } = validatedReqBody
             const { file } = req 
-    
+            
             if (!file){
                 throw new BadRequestError("Image file is required")
             }
-    
+            
             const product = await this.service.addProduct({ name, price, stock, description, size, weight, texture, category_id, image: file })
-    
+
             res.status(201).json({
                 status: "success",
                 data: { product: productMapper.response(product) }

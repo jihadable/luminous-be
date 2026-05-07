@@ -48,11 +48,11 @@ class UserHandler {
 
             const { name, email, password, phone, address } = validatedReqBody
             const user = await this.service.addUser({ name, email, password, role: Role.customer, phone, address })
-            const token = getJWT(user.id, user.role)
+            const jwt = getJWT(user.id, user.role)
 
             res.status(201).json({
                 status: "success",
-                data: { user: userMapper.response(user), token }
+                data: { user: userMapper.response(user), jwt }
             })
         } catch(error){
             next(error)
@@ -96,11 +96,11 @@ class UserHandler {
             
             const { email, password } = validatedReqBody
             const user = await this.service.verifyUser(email, password)
-            const token = getJWT(user.id, user.role)
+            const jwt = getJWT(user.id, user.role)
 
             res.status(200).json({
                 status: "success",
-                data: { user: userMapper.response(user), token }
+                data: { user: userMapper.response(user), jwt }
             })
         } catch(error){
             next(error)
