@@ -102,12 +102,15 @@ class ProductService {
     async updateProductById(
         id: string, 
         { name, price, stock, texture, weight, size, description, category_id, image }: 
-        { name: string, price: number, stock: number, texture: string, weight: string, size: string, description: string, category_id: string, image: Express.Multer.File }
+        { name: string, price: number, stock: number, texture: string, weight: string, size: string, description: string, category_id: string, image?: Express.Multer.File }
     ){
         let product = await this.getProductById(id)
 
-        await this.storageService.deleteImage(product.image_url)
-        const image_url = await this.storageService.addImage(image)
+        let image_url = product.image_url
+        if (image){
+            await this.storageService.deleteImage(product.image_url)
+            image_url = await this.storageService.addImage(image)
+        }
 
         product = await this.db.product.update({
             where: { id },

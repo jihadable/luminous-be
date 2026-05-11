@@ -81,11 +81,7 @@ class ProductHandler {
             
             const { product_id } = req.params
             const { name, price, stock, description, size, weight, texture, category_id } = validatedReqBody
-            const { file } = req 
-    
-            if (!file){
-                throw new BadRequestError("Image file is required")
-            }
+            const { file } = req
     
             const product = await this.service.updateProductById(product_id, { name, price, stock, description, size, weight, texture,category_id, image: file })
     
