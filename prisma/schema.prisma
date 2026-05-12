@@ -33,6 +33,7 @@ model User {
 
   cart Cart?
   email_verifications EmailVerification[]
+  reset_passwords ResetPassword[]
 
   @@map("users")
 }
@@ -105,4 +106,15 @@ model EmailVerification {
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("email_verifications")
+}
+
+model ResetPassword {
+  id String @id @default(uuid())
+  user_id String
+  token String
+  expire_at DateTime
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("reset_passwords")
 }
