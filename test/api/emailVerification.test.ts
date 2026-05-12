@@ -18,8 +18,8 @@ describe("Email Verification API", () => {
         expect(response.body.status).toBe("success")
 
         expect(response.body.data).toHaveProperty("user")
-        expect(response.body.data).toHaveProperty("token")
-        customer_jwt = response.body.data.token
+        expect(response.body.data).toHaveProperty("jwt")
+        customer_jwt = response.body.data.jwt
 
         expect(response.body.data.user).toHaveProperty("id")
         expect(response.body.data.user).toHaveProperty("role")
@@ -51,8 +51,8 @@ describe("Email Verification API", () => {
         expect(response.body.status).toBe("success")
 
         expect(response.body.data).toHaveProperty("user")
-        expect(response.body.data).toHaveProperty("token")
-        admin_jwt = response.body.data.token
+        expect(response.body.data).toHaveProperty("jwt")
+        admin_jwt = response.body.data.jwt
 
         expect(response.body.data.user).toHaveProperty("id")
         expect(response.body.data.user).toHaveProperty("role")

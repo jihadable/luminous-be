@@ -18,8 +18,8 @@ describe("Category API", () => {
         expect(response.body.status).toBe("success")
 
         expect(response.body.data).toHaveProperty("user")
-        expect(response.body.data).toHaveProperty("token")
-        jwt = response.body.data.token
+        expect(response.body.data).toHaveProperty("jwt")
+        jwt = response.body.data.jwt
 
         expect(response.body.data.user).toHaveProperty("id")
         expect(response.body.data.user).toHaveProperty("role")
@@ -125,5 +125,18 @@ describe("Category API", () => {
         expect(response.body).toHaveProperty("status")
 
         expect(response.body.status).toBe("success")
+    })
+
+    test("Delete category with invalid id", async() => {
+        const response = await request(app).delete("/api/categories/xxx").set({
+            "Authorization": `Bearer ${jwt}`
+        })
+
+        expect(response.status).toBe(404)
+
+        expect(response.body).toHaveProperty("status")
+        expect(response.body).toHaveProperty("message")
+
+        expect(response.body.status).toBe("fail")
     })
 })

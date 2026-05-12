@@ -2,7 +2,7 @@ import request from "supertest"
 import app from "./testApp"
 
 describe("Product API", () => {
-    let jwt: string, product_id: string, category_id: string
+    let jwt: string, product_id: string, category_id: string, category_name: string
 
     test("Login as admin", async() => {
         const response = await request(app).post("/api/users/login").send({
@@ -16,8 +16,8 @@ describe("Product API", () => {
         expect(response.body).toHaveProperty("data")
 
         expect(response.body.data).toHaveProperty("user")
-        expect(response.body.data).toHaveProperty("token")
-        jwt = response.body.data.token
+        expect(response.body.data).toHaveProperty("jwt")
+        jwt = response.body.data.jwt
 
         expect(response.body.data.user).toHaveProperty("id")
         expect(response.body.data.user).toHaveProperty("role")
@@ -42,6 +42,7 @@ describe("Product API", () => {
         expect(Array.isArray(response.body.data.categories)).toBe(true)
         expect(response.body.data.categories[0]).toHaveProperty("id")
         category_id = response.body.data.categories[0].id
+        category_name = response.body.data.categories[0].name
         expect(response.body.data.categories[0]).toHaveProperty("name")
     })
 
@@ -112,8 +113,10 @@ describe("Product API", () => {
         expect(response.body.status).toBe("fail")
     })
 
-    test("Get products", async() => {
-        const response = await request(app).get("/api/products")
+    test("Get 20 products", async() => {
+        const response = await request(app).get("/api/products").query({
+            limit: 20
+        })
 
         expect(response.status).toBe(200)
 
@@ -123,8 +126,10 @@ describe("Product API", () => {
         expect(response.body.status).toBe("success")
 
         expect(response.body.data).toHaveProperty("products")
+        expect(response.body.data).toHaveProperty("pagination")
 
         expect(Array.isArray(response.body.data.products)).toBe(true)
+        expect(response.body.data.products.length).toBe(20)
         expect(response.body.data.products[0]).toHaveProperty("id")
         expect(response.body.data.products[0]).toHaveProperty("name")
         expect(response.body.data.products[0]).toHaveProperty("price")
@@ -134,6 +139,41 @@ describe("Product API", () => {
         expect(response.body.data.products[0]).toHaveProperty("size")
         expect(response.body.data.products[0]).toHaveProperty("description")
         expect(response.body.data.products[0]).toHaveProperty("category")
+        expect(response.body.data.products[0]).toHaveProperty("image_url")
+
+        expect(response.body.data.products[0].category).toHaveProperty("id")
+        expect(response.body.data.products[0].category).toHaveProperty("name")
+    })
+
+    test("Get 10 products with specific category", async() => {
+        const response = await request(app).get("/api/products").query({
+            limit: 10,
+            category: category_name
+        })
+
+        expect(response.status).toBe(200)
+
+        expect(response.body).toHaveProperty("status")
+        expect(response.body).toHaveProperty("data")
+
+        expect(response.body.status).toBe("success")
+
+        expect(response.body.data).toHaveProperty("products")
+        expect(response.body.data).toHaveProperty("pagination")
+
+        expect(Array.isArray(response.body.data.products)).toBe(true)
+        expect(response.body.data.products.length).toBe(10)
+        expect(response.body.data.products[0]).toHaveProperty("id")
+        expect(response.body.data.products[0]).toHaveProperty("name")
+        expect(response.body.data.products[0]).toHaveProperty("price")
+        expect(response.body.data.products[0]).toHaveProperty("stock")
+        expect(response.body.data.products[0]).toHaveProperty("texture")
+        expect(response.body.data.products[0]).toHaveProperty("weight")
+        expect(response.body.data.products[0]).toHaveProperty("size")
+        expect(response.body.data.products[0]).toHaveProperty("description")
+        expect(response.body.data.products[0]).toHaveProperty("category")
+        expect(response.body.data.products[0].category).toHaveProperty("name")
+        expect(response.body.data.products[0].category.name).toBe(category_name)
         expect(response.body.data.products[0]).toHaveProperty("image_url")
 
         expect(response.body.data.products[0].category).toHaveProperty("id")
@@ -241,6 +281,92 @@ describe("Product API", () => {
         expect(response.body.data.product.category.id).toBe(category_id)
     })
 
+    test("Update product without image", async() => {
+        const response = await request(app).put(`/api/products/${product_id}`)
+            .set({
+                "Authorization": `Bearer ${jwt}`
+            })
+            .field("name", "update test product 1")
+            .field("price", 1500)
+            .field("stock", 500)
+            .field("texture", "Steel")
+            .field("weight", "2kg")
+            .field("size", "100cm x 50cm")
+            .field("description", "update test description 1")
+            .field("category_id", category_id)
+        
+        expect(response.status).toBe(200)
+
+        expect(response.body).toHaveProperty("status")
+        expect(response.body).toHaveProperty("data")
+
+        expect(response.body.status).toBe("success")
+
+        expect(response.body.data).toHaveProperty("product")
+
+        expect(response.body.data.product).toHaveProperty("id")
+        expect(response.body.data.product).toHaveProperty("name")
+        expect(response.body.data.product).toHaveProperty("price")
+        expect(response.body.data.product).toHaveProperty("stock")
+        expect(response.body.data.product).toHaveProperty("texture")
+        expect(response.body.data.product).toHaveProperty("weight")
+        expect(response.body.data.product).toHaveProperty("size")
+        expect(response.body.data.product).toHaveProperty("description")
+        expect(response.body.data.product).toHaveProperty("category")
+        expect(response.body.data.product).toHaveProperty("image_url")
+
+        expect(response.body.data.product.category).toHaveProperty("id")
+        expect(response.body.data.product.category).toHaveProperty("name")
+
+        expect(response.body.data.product.id).toBe(product_id)
+        expect(response.body.data.product.name).toBe("update test product 1")
+        expect(response.body.data.product.price).toBe(1500)
+        expect(response.body.data.product.stock).toBe(500)
+        expect(response.body.data.product.texture).toBe("Steel")
+        expect(response.body.data.product.weight).toBe("2kg")
+        expect(response.body.data.product.size).toBe("100cm x 50cm")
+        expect(response.body.data.product.description).toBe("update test description 1")
+
+        expect(response.body.data.product.category.id).toBe(category_id)
+    })
+
+    test("Update product with invalid payload", async() => {
+        const response = await request(app).put(`/api/products/${product_id}`)
+            .set({
+                "Authorization": `Bearer ${jwt}`
+            })
+            .send({})
+
+        expect(response.status).toBe(400)
+
+        expect(response.body).toHaveProperty("status")
+        expect(response.body).toHaveProperty("message")
+
+        expect(response.body.status).toBe("fail")
+    })
+
+    test("Update product with invalid id", async() => {
+        const response = await request(app).put("/api/products/xxx")
+            .set({
+                "Authorization": `Bearer ${jwt}`
+            })
+            .field("name", "update test product 1")
+            .field("price", 1500)
+            .field("stock", 500)
+            .field("texture", "Steel")
+            .field("weight", "2kg")
+            .field("size", "100cm x 50cm")
+            .field("description", "update test description 1")
+            .field("category_id", category_id)
+
+        expect(response.status).toBe(404)
+
+        expect(response.body).toHaveProperty("status")
+        expect(response.body).toHaveProperty("message")
+
+        expect(response.body.status).toBe("fail")
+    })
+
     test("Delete product", async() => {
         const response = await request(app).delete(`/api/products/${product_id}`).set({
             "Authorization": `Bearer ${jwt}`
@@ -251,5 +377,18 @@ describe("Product API", () => {
         expect(response.body).toHaveProperty("status")
 
         expect(response.body.status).toBe("success")
+    })
+
+    test("Delete product with invalid id", async() => {
+        const response = await request(app).delete(`/api/products/xxx`).set({
+            "Authorization": `Bearer ${jwt}`
+        })
+
+        expect(response.status).toBe(404)
+
+        expect(response.body).toHaveProperty("status")
+        expect(response.body).toHaveProperty("message")
+
+        expect(response.body.status).toBe("fail")
     })
 })

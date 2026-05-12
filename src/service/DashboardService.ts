@@ -12,8 +12,9 @@ class DashboardService {
 
     async getDashboardData(){
         const redisKey = `dashboard`
+        console.log(this.redis)
         const dashboardInRedis = await this.redis.get(redisKey)
-
+        
         if (dashboardInRedis){
             return JSON.parse(dashboardInRedis)
         }
