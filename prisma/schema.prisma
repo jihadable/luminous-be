@@ -100,7 +100,7 @@ model CartProduct {
 model EmailVerification {
   id String @id @default(uuid())
   user_id String
-  token String
+  token String @unique
   expire_at DateTime
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -111,7 +111,7 @@ model EmailVerification {
 model ResetPassword {
   id String @id @default(uuid())
   user_id String
-  token String
+  token String @unique
   expire_at DateTime
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)

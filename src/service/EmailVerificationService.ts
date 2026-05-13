@@ -53,6 +53,10 @@ class EmailVerificationService {
             }
             
             if (emailVerification.expire_at < new Date()){
+                await tx.emailVerification.delete({
+                    where: { id: emailVerification.id }
+                })
+
                 throw new BadRequestError("Token is invalid or expired")
             }
             
@@ -71,8 +75,8 @@ class EmailVerificationService {
                 }
             })
 
-            await tx.emailVerification.delete({
-                where: { id: emailVerification.id }
+            await tx.emailVerification.deleteMany({
+                where: { user_id: user.id }
             })
         })
     }

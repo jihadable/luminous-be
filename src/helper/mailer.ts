@@ -24,4 +24,19 @@ const sendEmailVerification = async(target: string, emailVerificationLink: strin
     })
 }
 
-export { sendEmailVerification }
+const sendResetPasswordEmail = async(target: string, resetPasswordLink: string) => {
+    const html = fs
+        .readFileSync(
+            new URL("../view/passwordReset.html", import.meta.url),
+            "utf-8"
+        )
+        .replace("{{passwordResetLink}}", resetPasswordLink)
+
+    await transporter.sendMail({
+        to: target,
+        subject: "[Luminous] Reset Password",
+        html
+    })
+}
+
+export { sendEmailVerification, sendResetPasswordEmail }
