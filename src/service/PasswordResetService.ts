@@ -5,7 +5,7 @@ import NotFoundError from "../errors/NotFoundError.js";
 import { sendResetPasswordEmail } from "../helper/mailer.js";
 import { getToken } from "../helper/tokenizer.js";
 
-class ResetPasswordService {
+class PasswordResetService {
     private db: PrismaClient
 
     constructor(db: PrismaClient){
@@ -24,7 +24,7 @@ class ResetPasswordService {
     
             const token = getToken()
             const expireTime = new Date(Date.now() + 24 * 60 * 60 * 1000)
-            await tx.resetPassword.create({
+            await tx.passwordReset.create({
                 data: {
                     user_id: user.id,
                     token,
@@ -41,18 +41,18 @@ class ResetPasswordService {
 
     async resetPassword(token: string, newPassword: string){
         await this.db.$transaction(async(tx) => {
-            const resetPassword = await tx.resetPassword.findFirst({
+            const passwordReset = await tx.passwordReset.findFirst({
                 where: { token }
             })
 
-            if (!resetPassword){
+            if (!passwordReset){
                 throw new BadRequestError("Token is invalid or expired")
             }
 
-            if (resetPassword.expire_at < new Date()){
-                await tx.resetPassword.delete({
+            if (passwordReset.expire_at < new Date()){
+                await tx.passwordReset.delete({
                     where: {
-                        id: resetPassword.id
+                        id: passwordReset.id
                     }
                 })
 
@@ -60,7 +60,7 @@ class ResetPasswordService {
             }
 
             const user = await tx.user.findUnique({
-                where: { id: resetPassword.user_id }
+                where: { id: passwordReset.user_id }
             })
 
             if (!user){
@@ -77,11 +77,11 @@ class ResetPasswordService {
                 data: { password: hashedNewPassword }
             })
 
-            await tx.resetPassword.deleteMany({
+            await tx.passwordReset.deleteMany({
                 where: { user_id: user.id }
             })
         })
     }
 }
 
-export default ResetPasswordService
+export default PasswordResetService
