@@ -16,6 +16,7 @@ const userRouter = (db: PrismaClient) => {
     router.put("/", authMiddleware, handler.updateUser)
     router.post("/login", handler.verifyUser)
     router.get("/", authMiddleware, authorizeRoleMiddleware(Role.admin), handler.getUsers)
+    router.patch("/update-password", authMiddleware, authorizeRoleMiddleware(Role.customer), handler.updatePassword)
 
     return router
 }

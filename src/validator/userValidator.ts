@@ -1,10 +1,11 @@
 import BadRequestError from "../errors/BadRequestError.js"
-import { LoginRequest, RegisterRequest, UpdateUserRequest } from "../model/request/userRequest.js"
+import { LoginRequest, RegisterRequest, UpdatePasswordRequest, UpdateUserRequest } from "../model/request/userRequest.js"
 
 export type UserValidator = {
     validateRegisterPayload: (payload: any) => any
     validateUpdateUserPayload: (payload: any) => any
     validateLoginPayload: (payload: any) => any
+    validateUpdatePasswordPayload: (payload: any) => any
 }
 
 const userValidator: UserValidator = {
@@ -30,6 +31,16 @@ const userValidator: UserValidator = {
     
     validateLoginPayload: (payload: any) => {
         const result = LoginRequest.validate(payload)
+        
+        if (result.error){
+            throw new BadRequestError(result.error.message)
+        }
+
+        return result.value
+    },
+
+    validateUpdatePasswordPayload: (payload: any) => {
+        const result = UpdatePasswordRequest.validate(payload)
         
         if (result.error){
             throw new BadRequestError(result.error.message)

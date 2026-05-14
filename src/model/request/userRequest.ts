@@ -19,4 +19,9 @@ const LoginRequest = Joi.object({
     password: Joi.string().required()
 })
 
-export { LoginRequest, RegisterRequest, UpdateUserRequest };
+const UpdatePasswordRequest = Joi.object({
+    new_password: Joi.string().required()
+})
+
+export { LoginRequest, RegisterRequest, UpdatePasswordRequest, UpdateUserRequest };
+

@@ -18,6 +18,7 @@ class UserHandler {
         this.getUserById = this.getUserById.bind(this)
         this.updateUser = this.updateUser.bind(this)
         this.verifyUser = this.verifyUser.bind(this)
+        this.updatePassword = this.updatePassword.bind(this)
     }
 
     async getUsers(req: Request, res: Response, next: NextFunction){
@@ -101,6 +102,21 @@ class UserHandler {
             res.status(200).json({
                 status: "success",
                 data: { user: userMapper.response(user), jwt }
+            })
+        } catch(error){
+            next(error)
+        }
+    }
+
+    async updatePassword(req: Request, res: Response, next: NextFunction){
+        try {
+            const { user_id } = res.locals
+            const { new_password } = this.validator.validateUpdatePasswordPayload(req.body)
+
+            await this.service.updatePassword(user_id, new_password)
+
+            res.status(200).json({
+                status: "success"
             })
         } catch(error){
             next(error)

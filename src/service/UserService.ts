@@ -71,7 +71,18 @@ class UserService {
     }
 
     async updateUser(id: string, { name, phone, address }: { name: string, phone: string, address: string }){
-        const user = await this.db.user.update({
+        let user = await this.db.user.findUnique({
+            where: { id },
+            include: {
+                cart: true
+            }
+        })
+
+        if (!user){
+            throw new NotFoundError("User not found")
+        }
+
+        user = await this.db.user.update({
             where: { id },
             data: { name, phone, address },
             include: {
@@ -101,8 +112,24 @@ class UserService {
         return user
     }
 
-    async updatePassword(userId: string, newPassword: string){
-        
+    async updatePassword(id: string, newPassword: string){
+        const user = await this.db.user.findUnique({
+            where: { id }
+        })
+
+        if (!user){
+            throw new NotFoundError("User not found")
+        }
+
+        if (compareSync(newPassword, user.password)){
+            throw new BadRequestError("New password can not be same with old password")
+        }
+
+        const hashedNewPassword = await hash(newPassword, 10)
+        await this.db.user.update({
+            where: { id },
+            data: { password: hashedNewPassword }
+        })
     }
 }
 

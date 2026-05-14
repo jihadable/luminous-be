@@ -219,4 +219,37 @@ describe("User API", () => {
         expect(response.body.data.users[0]).toHaveProperty("address")
         expect(response.body.data.users[0]).toHaveProperty("is_email_verified")
     })
+
+    test("Update password", async() => {
+        const response = await request(app).patch("/api/users/update-password")
+            .set({
+                "Authorization": `Bearer ${customer_jwt}`
+            })
+            .send({
+                new_password: "secret123"
+            })
+
+        expect(response.status).toBe(200)
+
+        expect(response.body).toHaveProperty("status")
+        
+        expect(response.body.status).toBe("success")
+    })
+
+    test("Update password with invalid new password", async() => {
+        const response = await request(app).patch("/api/users/update-password")
+            .set({
+                "Authorization": `Bearer ${customer_jwt}`
+            })
+            .send({
+                new_password: "secret123"
+            })
+        
+        expect(response.status).toBe(400)
+
+        expect(response.body).toHaveProperty("status")
+        expect(response.body).toHaveProperty("message")
+
+        expect(response.body.status).toBe("fail")
+    })
 })
