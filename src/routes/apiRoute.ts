@@ -6,8 +6,8 @@ import cartProductRouter from "./cartProductRoute.js";
 import categoryRouter from "./categoryRoute.js";
 import dashboardRouter from "./dashboardRoute.js";
 import emailVerificationRouter from "./emailVerificationRoute.js";
+import passwordResetRouter from "./passwordResetRoute.js";
 import productRouter from "./productRoute.js";
-import resetPasswordRouter from "./resetPasswordRoute.js";
 import userRouter from "./userRoute.js";
 
 const apiRouter = (db: PrismaClient, redis: ReturnType<typeof getRedis>) => {
@@ -18,7 +18,7 @@ const apiRouter = (db: PrismaClient, redis: ReturnType<typeof getRedis>) => {
     router.use("/products", productRouter(db, redis))
     router.use("/carts", cartProductRouter(db))
     router.use("/email-verifications", emailVerificationRouter(db))
-    router.use("/reset-password", resetPasswordRouter(db))
+    router.use("/password-reset", passwordResetRouter(db))
 
     router.use("/dashboard", dashboardRouter(db, redis))
     

@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { compareSync, hash } from "bcrypt";
 import BadRequestError from "../errors/BadRequestError.js";
-import NotFoundError from "../errors/NotFoundError.js";
 import { sendResetPasswordEmail } from "../helper/mailer.js";
 import { getToken } from "../helper/tokenizer.js";
 
@@ -19,7 +18,7 @@ class PasswordResetService {
             })
     
             if (!user){
-                throw new NotFoundError("User not found")
+                throw new BadRequestError("User not found")
             }
     
             const token = getToken()
