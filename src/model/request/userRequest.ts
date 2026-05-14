@@ -20,6 +20,7 @@ const LoginRequest = Joi.object({
 })
 
 const UpdatePasswordRequest = Joi.object({
+    old_password: Joi.string().required(),
     new_password: Joi.string().required()
 })
 

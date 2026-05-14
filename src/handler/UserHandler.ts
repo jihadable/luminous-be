@@ -111,9 +111,9 @@ class UserHandler {
     async updatePassword(req: Request, res: Response, next: NextFunction){
         try {
             const { user_id } = res.locals
-            const { new_password } = this.validator.validateUpdatePasswordPayload(req.body)
+            const { old_password, new_password } = this.validator.validateUpdatePasswordPayload(req.body)
 
-            await this.service.updatePassword(user_id, new_password)
+            await this.service.updatePassword(user_id, old_password, new_password)
 
             res.status(200).json({
                 status: "success"

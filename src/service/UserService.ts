@@ -112,13 +112,17 @@ class UserService {
         return user
     }
 
-    async updatePassword(id: string, newPassword: string){
+    async updatePassword(id: string, oldPassword: string, newPassword: string){
         const user = await this.db.user.findUnique({
             where: { id }
         })
 
         if (!user){
             throw new NotFoundError("User not found")
+        }
+
+        if (!compareSync(oldPassword, user.password)){
+            throw new BadRequestError("Password is incorrect")
         }
 
         if (compareSync(newPassword, user.password)){

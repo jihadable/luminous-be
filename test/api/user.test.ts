@@ -226,6 +226,7 @@ describe("User API", () => {
                 "Authorization": `Bearer ${customer_jwt}`
             })
             .send({
+                old_password: process.env.PRIVATE_PASSWORD,
                 new_password: "secret123"
             })
 
@@ -242,6 +243,7 @@ describe("User API", () => {
                 "Authorization": `Bearer ${customer_jwt}`
             })
             .send({
+                old_password: "secret123",
                 new_password: "secret123"
             })
         
