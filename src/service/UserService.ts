@@ -100,6 +100,10 @@ class UserService {
 
         return user
     }
+
+    async updatePassword(userId: string, newPassword: string){
+        
+    }
 }
 
 export default UserService
